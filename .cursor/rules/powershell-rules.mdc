@@ -1,0 +1,6 @@
+---
+description: refer to these syntax rules whenever you create or execute terminal commands
+globs: 
+alwaysApply: false
+---
+we are on a WINDOWS device, when creating powershell commands, ALWAYS USE ; semicolons NEVER USE &&
