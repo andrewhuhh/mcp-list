@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
-import type { MCP, Feature } from '../../types/mcp';
+import type { MCP } from '../../types/mcp';
 
 async function fetchMCP(id: string): Promise<MCP> {
   const { data, error } = await supabase

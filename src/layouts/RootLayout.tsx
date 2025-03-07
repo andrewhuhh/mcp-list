@@ -22,7 +22,7 @@ export function RootLayout() {
           </div>
         </div>
       </header>
-      <main className="container py-6 flex-1 max-w-7xl mx-auto">
+      <main className="container py-6 mb-6 flex-1 max-w-7xl mx-auto">
         <Outlet />
       </main>
       <footer className="border-t py-6">

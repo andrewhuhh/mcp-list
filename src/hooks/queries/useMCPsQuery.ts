@@ -11,7 +11,6 @@ interface QueryOptions {
   promotedOnly?: boolean;
 }
 
-type SortableFields = keyof Pick<MCP, 'created_at' | 'last_updated'>;
 
 async function fetchMCPs(searchQuery: string = '', options: QueryOptions = {}): Promise<MCP[]> {
   // First, get the ratings for each MCP

@@ -39,7 +39,7 @@ export const Directory = () => {
   return (
     <div className="h-full">
       {/* Header */}
-      <div className="mb-8 mt-20 text-center">
+      <div className="mb-8 mt-8 text-center">
         <h1 className="text-3xl font-bold mb-2 text-foreground">Discover MCP Servers</h1>
         <p className="text-muted-foreground">Browse and discover Model Context Protocol (MCP) tools and services</p>
       </div>
