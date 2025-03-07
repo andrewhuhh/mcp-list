@@ -5,12 +5,14 @@ import { Card, CardHeader, CardContent, CardFooter } from './ui/card';
 import { VoteButtons } from './VoteButtons';
 import { useEffect, useRef, useState } from 'react';
 import { Badge } from './ui/badge';
+import { useNavigate } from 'react-router-dom';
 
 interface MCPCardProps {
   mcp: MCP;
 }
 
 export const MCPCard = ({ mcp }: MCPCardProps) => {
+  const navigate = useNavigate();
   const { stats, vote } = useVotes(mcp.id);
   const isDark = useTheme();
   const categoriesRef = useRef<HTMLDivElement>(null);
@@ -70,7 +72,13 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
 
   return (
     <div className="group relative flex gap-3">
-      <Card as="article" className="flex flex-1 flex-col h-full justify-between transition-colors hover:border-border/60" onClick={() => window.location.href = `/mcp/${mcp.id}`} role="link" tabIndex={0}>
+      <Card 
+        as="article" 
+        className="flex flex-1 flex-col h-full justify-between transition-colors hover:border-border/60" 
+        onClick={() => navigate(`/mcp/${mcp.id}`)} 
+        role="link" 
+        tabIndex={0}
+      >
         
         {/* Card Header */}
         <CardHeader className="flex flex-row gap-4 p-5 justify-between">
