@@ -19,6 +19,15 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
   const [visibleCategories, setVisibleCategories] = useState<string[]>([]);
   const [hasMore, setHasMore] = useState(false);
 
+  // Get the platform from app_integrations or default to 'cursor'
+  const getPlatform = () => {
+    if (!mcp.app_integrations?.length) return 'cursor';
+    // If cursor is in the integrations, prioritize it
+    if (mcp.app_integrations.includes('cursor')) return 'cursor';
+    // Otherwise use the first integration
+    return mcp.app_integrations[0].toLowerCase();
+  };
+
   // Format the last updated date
   const lastUpdated = new Date(mcp.last_updated);
   const timeAgo = new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
@@ -70,12 +79,29 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
     return () => window.removeEventListener('resize', calculateVisibleCategories);
   }, [mcp.categories]);
 
+  // Get platform badges
+  const getPlatformBadges = () => {
+    const platforms = mcp.app_integrations || ['cursor'];
+    return platforms.map(platform => {
+      const isMain = platform.toLowerCase() === 'cursor';
+      return (
+        <Badge
+          key={platform}
+          variant={isMain ? "default" : "secondary"}
+          className={`${isMain ? 'bg-primary' : 'bg-muted'} capitalize`}
+        >
+          {platform}
+        </Badge>
+      );
+    });
+  };
+
   return (
     <div className="group relative flex flex-col flex-1 gap-3 h-full">
       <Card 
         as="article" 
         className="flex flex-1 flex-col h-full justify-between transition-colors hover:border-border/60" 
-        onClick={() => navigate(`/mcp/${mcp.id}`)} 
+        onClick={() => navigate(`/mcps/${getPlatform()}/${mcp.id}`)} 
         role="link" 
         tabIndex={0}
       >
@@ -103,6 +129,10 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
                   )}
                 </div>
                 <p className="text-sm text-muted-foreground font-medium">{mcp.company}</p>
+                {/* Add Platform Badges */}
+                <div className="flex gap-2 mt-2">
+                  {getPlatformBadges()}
+                </div>
               </div>
             </div>
             

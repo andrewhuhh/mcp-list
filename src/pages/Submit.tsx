@@ -9,6 +9,7 @@ export const Submit = () => {
     name: '',
     company: '',
     description: '',
+    summary: '',
     hosting_type: 'self-hosted' as HostingType,
     status: 'community' as Status,
     setup_type: 'easy-setup' as SetupType,
@@ -33,12 +34,13 @@ export const Submit = () => {
 
     try {
       // Insert into pending_mcps instead of direct tables
-      const { data: pendingMcpData, error: pendingMcpError } = await supabase
+      const { error: pendingMcpError } = await supabase
         .from('pending_mcps')
         .insert({
           name: formData.name,
           company: formData.company,
           description: formData.description,
+          summary: formData.summary,
           hosting_type: formData.hosting_type,
           status: formData.status,
           setup_type: formData.setup_type,
@@ -46,11 +48,24 @@ export const Submit = () => {
           categories: formData.categories,
           github_url: formData.github_url,
           logo_url: formData.logo_url || null,
-          features: formData.features.filter(f => f.title && f.description),
+          last_updated: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          is_promoted: false,
+          seo_aliases: [], // Will be filled by admin during review
+          app_integrations: ['cursor'], // Default to cursor, can be expanded by admin
+          features: formData.features
+            .filter(f => f.title && f.description)
+            .map(feature => ({
+              title: feature.title,
+              description: feature.description,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            })),
           setup_guide: {
             steps: formData.setup_guide.steps.filter(step => step),
             command: formData.setup_guide.command || null,
-            url: formData.setup_guide.url || null
+            url: formData.setup_guide.url || null,
+            created_at: new Date().toISOString()
           }
         })
         .select()
@@ -65,6 +80,7 @@ export const Submit = () => {
         name: '',
         company: '',
         description: '',
+        summary: '',
         hosting_type: 'self-hosted',
         status: 'community',
         setup_type: 'easy-setup',
@@ -226,8 +242,28 @@ export const Submit = () => {
           </div>
 
           <div>
+            <label htmlFor="summary" className="block text-sm font-medium mb-2 text-foreground">
+              Summary* <span className="text-muted-foreground">(One-line description)</span>
+            </label>
+            <input
+              type="text"
+              id="summary"
+              name="summary"
+              value={formData.summary}
+              onChange={handleChange}
+              maxLength={150}
+              className="w-full px-2 py-2 rounded-md bg-background border border-border focus:ring-2 focus:ring-ring text-sm"
+              required
+              placeholder="A brief one-line summary of your MCP implementation"
+            />
+            <p className="mt-1 text-sm text-muted-foreground">
+              {formData.summary.length}/150 characters
+            </p>
+          </div>
+
+          <div>
             <label htmlFor="description" className="block text-sm font-medium mb-2 text-foreground">
-              Description*
+              Description* <span className="text-muted-foreground">(Detailed explanation)</span>
             </label>
             <textarea
               id="description"
@@ -237,7 +273,7 @@ export const Submit = () => {
               rows={4}
               className="w-full px-2 py-2 rounded-md bg-background border border-border focus:ring-2 focus:ring-ring text-sm"
               required
-              placeholder="e.g. Cursor is a code editor that allows you to write code in any language, and it has a built-in MCP server."
+              placeholder="Provide a detailed description of your MCP implementation, including its key features and use cases."
             />
           </div>
         </div>

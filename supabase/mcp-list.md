@@ -3,14 +3,29 @@
 ### AWS KB Retrieval
 - [x] MCP
 - [ ] Setup Guide
-- [ ] Logo
+- [x] Logo
 
 ### Brave Search
 - [x] MCP
 - [ ] Setup Guide
-- [ ] Logo
+- [x] Logo
+
+### Browser Tools
+- [x] MCP
+- [x] Setup Guide
+- [x] Logo
 
 ### EverArt
+- [x] MCP
+- [ ] Setup Guide
+- [x] Logo
+
+### Everything
+- [x] MCP
+- [ ] Setup Guide
+- [ ] Logo
+
+### Fetch
 - [x] MCP
 - [ ] Setup Guide
 - [ ] Logo
@@ -23,7 +38,12 @@
 ### Git
 - [x] MCP
 - [ ] Setup Guide
-- [ ] Logo
+- [x] Logo
+
+### Redis
+- [x] MCP
+- [ ] Setup Guide
+- [x] Logo
 
 ### GitHub
 - [ ] MCP

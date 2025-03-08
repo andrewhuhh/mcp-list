@@ -26,6 +26,7 @@ export interface MCP {
   name: string;
   company: string;
   description: string;
+  summary: string;
   hosting_type: HostingType;
   status: Status;
   setup_type: SetupType;
@@ -38,4 +39,20 @@ export interface MCP {
   is_promoted?: boolean;
   features?: Feature[];
   setupGuide?: SetupGuide;
+  seo_aliases: string[];
+  app_integrations: string[];
+}
+
+export interface MCPReview {
+  id: string;
+  mcp_id: string;
+  user_id: string;
+  rating: number;
+  review_text: string;
+  pros: string[];
+  cons: string[];
+  use_case: string;
+  created_at: string;
+  helpful_votes: number;
+  is_verified_user: boolean;
 } 

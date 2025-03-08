@@ -11,7 +11,7 @@ export const AppRoutes: React.FC = () => {
     <Routes>
       <Route element={<RootLayout />}>
         <Route path="/" element={<Directory />} />
-        <Route path="/mcp/:id" element={<MCPDetail />} />
+        <Route path="/mcps/:platform/:id" element={<MCPDetail />} />
         <Route path="/docs" element={<Documentation />} />
         <Route path="/submit" element={<Submit />} />
       </Route>

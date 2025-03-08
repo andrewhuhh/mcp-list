@@ -8,145 +8,93 @@ import { useTheme } from '../hooks/useTheme';
 import { Card, CardHeader, CardContent, CardFooter } from '../components/ui/card';
 import { CodeBlock } from '../components/blocks/CodeBlock';
 import { PlainCodeBlock } from '../components/blocks/PlainCodeBlock';
+import { MCPMetaTags } from '../components/seo/MCPMetaTags';
 
-// Setup Guide section component
-const SetupGuideSection: React.FC<{ setupGuide: MCP['setupGuide'] }> = ({ setupGuide }) => {
+// Platform Config section component
+const PlatformConfigSection: React.FC<{ 
+  platform: string;
+  setupGuide: MCP['setupGuide'];
+  isDark: boolean;
+}> = ({ platform, setupGuide }) => {
   if (!setupGuide) return null;
 
-  // Generate IDE config examples
-  const generateMCPConfig = (name: string, command?: string) => {
-    if (!command) return null;
+  const getPlatformConfig = () => {
+    if (!setupGuide.command) return null;
     
-    // Split command into command and args if it contains spaces
-    const parts = command.split(' ');
+    const parts = setupGuide.command.split(' ');
     const mainCommand = parts[0];
     const args = parts.slice(1);
     
-    return {
-      cursor: {
-        name,
-        type: "command",
-        command
-      },
-      windsurf: JSON.stringify({
-        mcpServers: {
-          [name.toLowerCase().replace(/\s+/g, '-')]: {
-            command: mainCommand,
-            args: args,
+    switch (platform.toLowerCase()) {
+      case 'cursor':
+        return {
+          type: 'json',
+          config: {
+            name: "my-mcp-server",
+            type: "command",
+            command: setupGuide.command
           }
-        }
-      }, null, 2)
-    };
+        };
+      case 'windsurf':
+      case 'codeium':
+        return {
+          type: 'json',
+          config: {
+            mcpServers: {
+              ["my-mcp-server"]: {
+                command: mainCommand,
+                args: args,
+              }
+            }
+          }
+        };
+      case 'vscode':
+        return {
+          type: 'json',
+          config: {
+            "mcp.servers": {
+              "my-mcp-server": {
+                "command": setupGuide.command
+              }
+            }
+          }
+        };
+      default:
+        return null;
+    }
   };
 
-  const configs = setupGuide.command ? generateMCPConfig("my-mcp-server", setupGuide.command) : null;
+  const config = getPlatformConfig();
+  if (!config) return null;
 
   return (
-    <div className="bg-card rounded-lg shadow-sm p-6 mb-6 border border-border">
-      <h2 className="text-2xl font-semibold mb-4 text-card-foreground">Setup Guide</h2>
-      <div className="space-y-6">
-        {/* Manual Installation Steps */}
-        {setupGuide.steps && setupGuide.steps.length > 0 && (
-          <div className="space-y-4">
-            <h3 className="font-medium text-lg text-card-foreground">Manual Installation Steps:</h3>
-            <ol className="list-decimal pl-6 space-y-4">
-              {setupGuide.steps.map((step: string, index: number) => (
-                <li key={index} className="text-muted-foreground">
-                  {step}
-                </li>
-              ))}
-            </ol>
-          </div>
-        )}
-
-        {/* IDE Configuration Section */}
-        {configs && (
-          <div className="space-y-4">
-            <h3 className="font-medium text-lg text-card-foreground">IDE Configuration</h3>
-            
-            {/* Cursor Configuration */}
-            <div className="space-y-2">
-              <h4 className="font-medium text-card-foreground">Cursor IDE</h4>
-              <div className="space-y-2">
-                <div>
-                  <div className="text-sm text-muted-foreground mb-1">Name:</div>
-                  <PlainCodeBlock code={configs.cursor.name} />
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground mb-1">Type:</div>
-                  <PlainCodeBlock code={configs.cursor.type} />
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground mb-1">Command:</div>
-                  <PlainCodeBlock code={configs.cursor.command} />
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">
-                Add this configuration in Cursor's Settings → Features → MCP Servers → Add new MCP server
-              </p>
-            </div>
-
-            {/* Windsurf/Codeium Configuration */}
-            <div className="space-y-2">
-              <h4 className="font-medium text-card-foreground">Windsurf/Codeium</h4>
-              <CodeBlock 
-                code={configs.windsurf} 
-                language="json"
-              />
-              <p className="text-sm text-muted-foreground">
-                Add this to your <code>~/.codeium/windsurf/mcp_config.json</code> file
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Setup Command */}
-        {setupGuide.command && (
-          <div className="space-y-2">
-            <h3 className="font-medium text-lg text-card-foreground">NPM Command:</h3>
-            <CodeBlock 
-              code={setupGuide.command}
-              language="bash"
-            />
-          </div>
-        )}
-
-        {/* Documentation Link */}
-        {setupGuide.url && (
-          <div className="space-y-2">
-            <h3 className="font-medium text-lg text-card-foreground">Documentation:</h3>
-            <a 
-              href={setupGuide.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-primary hover:text-primary/80 underline underline-offset-4"
-            >
-              View Documentation
-              <svg 
-                className="w-4 h-4 ml-1" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
-              </svg>
-            </a>
-          </div>
-        )}
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <img 
+          src={`/assets/logos/${platform.toLowerCase()}.jpeg`}
+          alt={`${platform} logo`}
+          className="w-6 h-6 rounded-md"
+        />
+        <h3 className="font-medium text-lg text-card-foreground capitalize">{platform} Configuration</h3>
       </div>
+      <CodeBlock 
+        code={JSON.stringify(config.config, null, 2)}
+        language={config.type}
+      />
+      <p className="text-sm text-muted-foreground">
+        {platform === 'cursor' && 'Add this configuration in Cursor\'s Settings → Features → MCP Servers → Add new MCP server'}
+        {platform === 'windsurf' && 'Add this to your ~/.codeium/windsurf/mcp_config.json file'}
+        {platform === 'vscode' && 'Add this to your VS Code settings.json file'}
+      </p>
     </div>
   );
 };
 
+// Setup Guide section component
+
 export const MCPDetail = () => {
-  const { id } = useParams<{ id: string }>();
-  const { data: mcp, isLoading: loading, error } = useMCPQuery(id || '');
+  const { id, platform } = useParams<{ id: string; platform: string }>();
+  const { data: mcp, isLoading: loading, error } = useMCPQuery(id || '', platform);
   const { stats, vote } = useVotes(id || '');
   const isDark = useTheme();
   const errorMessage = error instanceof Error ? error.message : 'An error occurred';
@@ -158,6 +106,10 @@ export const MCPDetail = () => {
     day: 'numeric',
     year: 'numeric'
   });
+
+  // Get all supported platforms
+  const platforms = mcp?.app_integrations || ['cursor'];
+  const currentPlatform = platform || 'cursor';
 
   if (loading) {
     return (
@@ -174,7 +126,9 @@ export const MCPDetail = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="bg-card rounded-lg shadow-sm p-6 text-center border border-border">
           <h2 className="text-2xl font-bold text-destructive mb-4">Error Loading MCP</h2>
-          <p className="text-muted-foreground mb-6">{errorMessage || "The MCP you're looking for doesn't exist or has been removed."}</p>
+          <p className="text-muted-foreground mb-6">
+            {errorMessage || "The MCP you're looking for doesn't exist or has been removed."}
+          </p>
           <Link to="/" className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -188,6 +142,9 @@ export const MCPDetail = () => {
 
   return (
     <div className="h-full max-w-5xl mx-auto">
+      {/* Add SEO Meta Tags */}
+      {mcp && <MCPMetaTags mcp={mcp} platform={currentPlatform} />}
+
       {/* Back button */}
       <div className="mb-6">
         <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors">
@@ -197,6 +154,30 @@ export const MCPDetail = () => {
           Back to List
         </Link>
       </div>
+
+      {/* Platform Navigation */}
+      {platforms.length > 1 && (
+        <div className="mb-6 flex gap-2">
+          {platforms.map(p => (
+            <Link
+              key={p}
+              to={`/mcps/${p.toLowerCase()}/${id}`}
+              className={`inline-flex items-center px-3 py-1 rounded-md ${
+                p.toLowerCase() === currentPlatform.toLowerCase()
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <img 
+                src={`/assets/logos/${p.toLowerCase()}.jpeg`}
+                alt={`${p} logo`}
+                className="w-4 h-4 mr-2 rounded-sm"
+              />
+              {p}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {/* Content */}
       <div className="space-y-6">
@@ -241,9 +222,11 @@ export const MCPDetail = () => {
                     />
                     {mcp.hosting_type === 'self-hosted' ? 'Self-Hosted' : 'Cloud-Hosted'}
                   </div>
+                  
                 </CardHeader>
 
                 <CardContent className="relative z-10 flex flex-col gap-4 px-6">
+
                   {/* Badges */}
                   <div className="flex flex-row items-center gap-5">
                     <span className="text-md text-foreground font-semibold">
@@ -264,17 +247,6 @@ export const MCPDetail = () => {
                     {mcp.description}
                   </p>
 
-                  {/* Categories */}
-                  {/* <div className="flex flex-wrap gap-1.5">
-                    {mcp.categories.map((category: string) => (
-                      <span 
-                        key={category}
-                        className="px-2.5 py-1 text-sm rounded-sm bg-muted text-foreground/80 font-semibold tracking-tight"
-                      >
-                        {category}
-                      </span>
-                    ))}
-                  </div> */}
                 </CardContent>
 
                 <CardFooter className="relative z-10 flex flex-row items-center justify-between px-6 pb-6">
@@ -345,12 +317,79 @@ export const MCPDetail = () => {
               </Link>
             </div>
 
-            {/* Setup Guide */}
-            {mcp.setupGuide && <SetupGuideSection setupGuide={mcp.setupGuide} />}
-          </div>
+              {/* Setup Guide */}
+              {mcp.setupGuide && (
+                <div className="bg-card rounded-lg shadow-sm p-6 mb-6 border border-border">
+                  <h2 className="text-2xl font-semibold mb-4 text-card-foreground">Setup Guide</h2>
+                  <div className="space-y-6">
+                    {/* Manual Installation Steps */}
+                    {mcp.setupGuide.steps && mcp.setupGuide.steps.length > 0 && (
+                      <div className="space-y-4">
+                        <h3 className="font-medium text-lg text-card-foreground">Manual Installation Steps:</h3>
+                        <ol className="list-decimal pl-6 space-y-4">
+                          {mcp.setupGuide.steps.map((step: string, index: number) => (
+                            <li key={index} className="text-muted-foreground">
+                              {step}
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
 
-                    {/* Sidebar */}
-                    <div className="space-y-6 lg:sticky lg:top-20 lg:self-start">
+                    {/* Platform-specific Configuration */}
+                    <PlatformConfigSection 
+                      platform={currentPlatform}
+                      setupGuide={mcp.setupGuide}
+                      isDark={isDark}
+                    />
+
+                    {/* Setup Command */}
+                    {mcp.setupGuide.command && (
+                      <div className="space-y-2">
+                        <h3 className="font-medium text-lg text-card-foreground">NPM Command:</h3>
+                        <CodeBlock 
+                          code={mcp.setupGuide.command}
+                          language="bash"
+                        />
+                      </div>
+                    )}
+
+                    {/* Documentation Link */}
+                    {mcp.setupGuide.url && (
+                      <div className="space-y-2">
+                        <h3 className="font-medium text-lg text-card-foreground">Documentation:</h3>
+                        <a 
+                          href={mcp.setupGuide.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-primary hover:text-primary/80 underline underline-offset-4"
+                        >
+                          View Documentation
+                          <svg 
+                            className="w-4 h-4 ml-1" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24" 
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              strokeWidth={2} 
+                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                            />
+                          </svg>
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              </div>
+
+              {/* Sidebar */}
+              <div className="space-y-6 lg:sticky lg:top-20 lg:self-start">
+              
               {/* Quickstart */}
               <div className="bg-card rounded-lg shadow-sm p-6 border border-border">
                 <div className="text-xl font-semibold mb-4 flex items-center text-card-foreground overflow-visible">
