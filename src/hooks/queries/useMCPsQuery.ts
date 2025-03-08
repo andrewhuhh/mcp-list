@@ -153,7 +153,7 @@ function calculateWeightedScore(mcp: MCP, voteCount: number): number {
 }
 
 export function useMCPsQuery(searchQuery: string = '', options: QueryOptions = {}) {
-  return useInfiniteQuery<PageResult, Error, PageResult>({
+  return useInfiniteQuery({
     queryKey: ['mcps', searchQuery, options],
     queryFn: ({ pageParam = 0 }) => fetchMCPsPage({ 
       cursor: pageParam as number, 

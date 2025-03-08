@@ -16,7 +16,7 @@ import { Skeleton } from "../components/ui/skeleton";
 
 type SortOption = {
   label: string;
-  value: string;
+  value: 'weighted' | 'rating' | 'last_updated' | 'created_at';
   direction: 'asc' | 'desc';
 };
 
@@ -64,9 +64,10 @@ export const Directory = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   const errorMessage = error instanceof Error ? error.message : 'An error occurred';
-  const allMCPs = data?.pages.flatMap(page => page.mcps).filter((mcp, index, self) => 
-    index === self.findIndex(m => m.id === mcp.id)
-  ) ?? [];
+  const allMCPs = data?.pages.flatMap(page => page.mcps) ?? [];
+  const uniqueMCPs = allMCPs.filter((mcp, index) => 
+    index === allMCPs.findIndex(m => m.id === mcp.id)
+  );
 
   return (
     <div className="h-full">
@@ -139,7 +140,7 @@ export const Directory = () => {
         <div className="flex flex-col">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
-              {allMCPs.map((mcp) => (
+              {uniqueMCPs.map((mcp) => (
                 <motion.div
                   key={mcp.id}
                   layout
@@ -173,7 +174,7 @@ export const Directory = () => {
       )}
 
       {/* Empty State */}
-      {!loading && !error && allMCPs.length === 0 && (
+      {!loading && !error && uniqueMCPs.length === 0 && (
         <div className="text-center py-12">
           <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
