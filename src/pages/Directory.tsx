@@ -64,7 +64,9 @@ export const Directory = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   const errorMessage = error instanceof Error ? error.message : 'An error occurred';
-  const allMCPs = data?.pages.flatMap(page => page.mcps) ?? [];
+  const allMCPs = data?.pages.flatMap(page => page.mcps).filter((mcp, index, self) => 
+    index === self.findIndex(m => m.id === mcp.id)
+  ) ?? [];
 
   return (
     <div className="h-full">
