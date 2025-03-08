@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useMCPsQuery } from '../hooks/queries/useMCPsQuery';
 import { MCPCard } from '../components/directory/MCPCard';
 import { SearchInput } from '../components/ui/search-input';
