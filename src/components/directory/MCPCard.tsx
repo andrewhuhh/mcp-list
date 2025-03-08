@@ -71,7 +71,7 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
   }, [mcp.categories]);
 
   return (
-    <div className="group relative flex gap-3">
+    <div className="group relative flex flex-col flex-1 gap-3 h-full">
       <Card 
         as="article" 
         className="flex flex-1 flex-col h-full justify-between transition-colors hover:border-border/60" 
