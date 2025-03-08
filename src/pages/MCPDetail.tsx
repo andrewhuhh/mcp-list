@@ -95,7 +95,7 @@ const PlatformConfigSection: React.FC<{
 export const MCPDetail = () => {
   const { id, platform } = useParams<{ id: string; platform: string }>();
   const { data: mcp, isLoading: loading, error } = useMCPQuery(id || '', platform);
-  const { stats, vote } = useVotes(id || '');
+  const { stats, vote } = useVotes(mcp?.id || '');
   const isDark = useTheme();
   const errorMessage = error instanceof Error ? error.message : 'An error occurred';
 
@@ -161,7 +161,7 @@ export const MCPDetail = () => {
           {platforms.map(p => (
             <Link
               key={p}
-              to={`/mcps/${p.toLowerCase()}/${id}`}
+              to={`/mcps/${p.toLowerCase()}/${mcp.slug}`}
               className={`inline-flex items-center px-3 py-1 rounded-md ${
                 p.toLowerCase() === currentPlatform.toLowerCase()
                   ? 'bg-primary text-primary-foreground'
@@ -301,7 +301,7 @@ export const MCPDetail = () => {
                 enabling real-time context sharing and intelligent interactions.
               </p>
               <Link 
-                to="/documentation" 
+                to="/docs" 
                 className="inline-flex items-center text-primary hover:text-primary/90"
               >
                 <span>Read full documentation</span>

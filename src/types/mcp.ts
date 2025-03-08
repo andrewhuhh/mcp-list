@@ -42,6 +42,7 @@ export interface MCP {
   seo_aliases: string[];
   app_integrations: string[];
   rating?: number;
+  slug: string;
 }
 
 export interface MCPReview {

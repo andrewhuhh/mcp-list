@@ -16,6 +16,15 @@ async function getUserIP(): Promise<string> {
 }
 
 export async function getVoteStats(mcpId: string): Promise<VoteStats> {
+  if (!mcpId) {
+    return {
+      upvotes: 0,
+      downvotes: 0,
+      total: 0,
+      userVote: null
+    };
+  }
+
   // Count all upvotes for this MCP
   const { count } = await supabase
     .from('mcps_votes')

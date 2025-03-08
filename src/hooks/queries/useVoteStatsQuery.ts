@@ -6,5 +6,6 @@ export function useVoteStatsQuery(mcpId: string) {
     queryKey: ['voteStats', mcpId],
     queryFn: () => getVoteStats(mcpId),
     staleTime: 1000 * 60, // Consider data stale after 1 minute
+    enabled: !!mcpId // Only run the query if we have a valid mcpId
   });
 } 

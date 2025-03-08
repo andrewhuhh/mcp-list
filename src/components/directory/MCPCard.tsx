@@ -84,7 +84,7 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
       <Card 
         as="article" 
         className="flex flex-1 flex-col h-full justify-between transition-colors hover:border-border/60" 
-        onClick={() => navigate(`/mcps/${getPlatform()}/${mcp.id}`)} 
+        onClick={() => navigate(`/mcps/${getPlatform()}/${mcp.slug}`)} 
         role="link" 
         tabIndex={0}
       >

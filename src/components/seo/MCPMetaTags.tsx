@@ -30,7 +30,7 @@ export const MCPMetaTags: React.FC<MCPMetaTagsProps> = ({ mcp, platform = 'curso
   ].filter(Boolean);
 
   // Generate canonical URL
-  const canonicalUrl = `https://mcp.modelcontextprotocol.ai/mcps/${platform.toLowerCase()}/${mcp.id}`;
+  const canonicalUrl = `https://mcp.modelcontextprotocol.ai/mcps/${platform.toLowerCase()}/${mcp.slug}`;
 
   // Get last updated date as version
   const lastUpdatedDate = new Date(mcp.last_updated);

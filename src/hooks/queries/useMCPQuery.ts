@@ -2,10 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
 import type { MCP } from '../../types/mcp';
 
-export const useMCPQuery = (id: string, platform?: string) => {
+export const useMCPQuery = (idOrSlug: string, platform?: string) => {
   return useQuery({
-    queryKey: ['mcp', id, platform],
+    queryKey: ['mcp', idOrSlug, platform],
     queryFn: async (): Promise<MCP> => {
+      // Check if the idOrSlug looks like a UUID
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrSlug);
+      
       let query = supabase
         .from('mcps')
         .select(`
@@ -21,8 +24,14 @@ export const useMCPQuery = (id: string, platform?: string) => {
             title,
             description
           )
-        `)
-        .eq('id', id);
+        `);
+
+      // If it looks like a UUID, search by ID, otherwise search by slug
+      if (isUUID) {
+        query = query.eq('id', idOrSlug);
+      } else {
+        query = query.eq('slug', idOrSlug);
+      }
 
       // If platform is specified and not 'cursor', filter by app_integrations
       if (platform && platform !== 'cursor') {
@@ -42,7 +51,7 @@ export const useMCPQuery = (id: string, platform?: string) => {
 
       return transformedData;
     },
-    enabled: !!id
+    enabled: !!idOrSlug
   });
 };
 
