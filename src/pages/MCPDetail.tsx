@@ -243,9 +243,14 @@ export const MCPDetail = () => {
                   </div>
 
                   {/* Description */}
-                  <p className="text-md text-muted-foreground font-inter">
-                    {mcp.description}
-                  </p>
+                  <div className="space-y-2">
+                    <p className="text-md font-medium text-foreground">
+                      {mcp.summary}
+                    </p>
+                    <p className="text-md text-muted-foreground font-inter">
+                      {mcp.description}
+                    </p>
+                  </div>
 
                 </CardContent>
 

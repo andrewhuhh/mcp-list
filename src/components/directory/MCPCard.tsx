@@ -79,23 +79,6 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
     return () => window.removeEventListener('resize', calculateVisibleCategories);
   }, [mcp.categories]);
 
-  // Get platform badges
-  const getPlatformBadges = () => {
-    const platforms = mcp.app_integrations || ['cursor'];
-    return platforms.map(platform => {
-      const isMain = platform.toLowerCase() === 'cursor';
-      return (
-        <Badge
-          key={platform}
-          variant={isMain ? "default" : "secondary"}
-          className={`${isMain ? 'bg-primary' : 'bg-muted'} capitalize`}
-        >
-          {platform}
-        </Badge>
-      );
-    });
-  };
-
   return (
     <div className="group relative flex flex-col flex-1 gap-3 h-full">
       <Card 
@@ -116,7 +99,7 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
                 <img 
                   src={mcp.logo_url} 
                   alt={`${mcp.name} logo`} 
-                  className="w-16 h-16 object-contain rounded-lg"
+                  className="w-20 h-20 object-contain rounded-lg"
                 />
               )}
               <div>
@@ -129,9 +112,21 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
                   )}
                 </div>
                 <p className="text-sm text-muted-foreground font-medium">{mcp.company}</p>
-                {/* Add Platform Badges */}
-                <div className="flex gap-2 mt-2">
-                  {getPlatformBadges()}
+                {/* App Integration Logos */}
+                <div className="flex gap-2 mt-2 items-center">
+                  {(mcp.app_integrations || ['cursor']).slice(0, 3).map((platform) => (
+                    <img 
+                      key={platform}
+                      src={`/assets/logos/${platform.toLowerCase()}.jpeg`}
+                      alt={`${platform} logo`}
+                      className="w-5 h-5 rounded-sm object-cover"
+                    />
+                  ))}
+                  {(mcp.app_integrations?.length || 0) > 3 && (
+                    <span className="text-xs text-muted-foreground font-medium">
+                      +{(mcp.app_integrations?.length || 0) - 3}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -186,7 +181,7 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
 
           {/* Description */}
           <p className="text-sm text-muted-foreground line-clamp-2 font-inter">
-            {mcp.description}
+            {mcp.summary}
           </p>
 
           {/* Categories */}
