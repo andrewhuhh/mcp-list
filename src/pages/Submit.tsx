@@ -242,8 +242,11 @@ export const Submit = () => {
           </div>
 
           <div>
-            <label htmlFor="summary" className="block text-sm font-medium mb-2 text-foreground">
-              Summary* <span className="text-muted-foreground">(One-line description)</span>
+            <label htmlFor="summary" className="flex flex-row items-end justify-between block text-sm font-medium mb-2 text-foreground">
+              <span>Summary* <span className="text-muted-foreground">(One-liner)</span></span>
+              <p className="text-sm text-muted-foreground/50 text-right">
+              {formData.summary.length}/150 characters
+            </p>
             </label>
             <input
               type="text"
@@ -256,9 +259,6 @@ export const Submit = () => {
               required
               placeholder="A brief one-line summary of your MCP implementation"
             />
-            <p className="mt-1 text-sm text-muted-foreground">
-              {formData.summary.length}/150 characters
-            </p>
           </div>
 
           <div>
@@ -491,11 +491,10 @@ export const Submit = () => {
           
           {formData.setup_guide.steps.map((step, index) => (
             <div key={index} className="flex gap-2">
-              <input
-                type="text"
+              <textarea
                 value={step}
                 onChange={(e) => handleStepChange(index, e.target.value)}
-                placeholder={`Step ${index + 1}`}
+                placeholder={`Step ${index + 1} -`}
                 className="flex-1 px-2 py-2 rounded-md bg-background border border-border focus:ring-2 focus:ring-ring text-sm"
               />
               {formData.setup_guide.steps.length > 1 && (
