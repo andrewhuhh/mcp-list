@@ -62,117 +62,117 @@
   - [x] Logo
 
 ### Community Implementations
-- [ ] Rememberizer AI
-  - [ ] MCP
+- [x] Rememberizer AI
+  - [x] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Replicate
-  - [ ] MCP
+- [x] Replicate
+  - [x] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Rijksmuseum
-  - [ ] MCP
+- [x] Rijksmuseum
+  - [x] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Salesforce MCP
-  - [ ] MCP
+- [x] Salesforce MCP
+  - [x] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Scholarly
-  - [ ] MCP
+- [x] Scholarly
+  - [x] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] SearXNG
-  - [ ] MCP
+- [~] SearXNG
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Snowflake
-  - [ ] MCP
+- [~] Snowflake
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Spotify
-  - [ ] MCP
+- [~] Spotify
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Stripe
-  - [ ] MCP
+- [~] Stripe
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] TMDB
-  - [ ] MCP
+- [~] TMDB
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Tavily Search
-  - [ ] MCP
+- [~] Tavily Search
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Ticketmaster
-  - [ ] MCP
+- [~] Ticketmaster
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Todoist
-  - [ ] MCP
+- [~] Todoist
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Travel Planner
-  - [ ] MCP
+- [~] Travel Planner
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Vega-Lite
-  - [ ] MCP
+- [~] Vega-Lite
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Video Editor
-  - [ ] MCP
+- [~] Video Editor
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] WildFly MCP
-  - [ ] MCP
+- [~] WildFly MCP
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] Windows CLI
-  - [ ] MCP
+- [~] Windows CLI
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] World Bank Data API
-  - [ ] MCP
+- [~] World Bank Data API
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] X (Twitter) by EnesCinr
-  - [ ] MCP
+- [~] X (Twitter) by EnesCinr
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] X (Twitter) by vidhupv
-  - [ ] MCP
+- [~] X (Twitter) by vidhupv
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] XMind
-  - [ ] MCP
+- [~] XMind
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo
 
-- [ ] YouTube
-  - [ ] MCP
+- [~] YouTube
+  - [~] MCP
   - [ ] Setup Guide
   - [ ] Logo 

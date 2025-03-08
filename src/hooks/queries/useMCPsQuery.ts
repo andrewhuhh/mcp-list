@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
 import type { MCP } from '../../types/mcp';
 
@@ -9,10 +9,18 @@ interface QueryOptions {
   setupType?: string;
   pricing?: string;
   promotedOnly?: boolean;
+  limit?: number;
 }
 
+interface PageParam {
+  cursor: number;
+  searchQuery: string;
+  options: QueryOptions;
+}
 
-async function fetchMCPs(searchQuery: string = '', options: QueryOptions = {}): Promise<MCP[]> {
+async function fetchMCPsPage({ cursor, searchQuery, options }: PageParam): Promise<{ mcps: MCP[], nextCursor: number | null }> {
+  const limit = options.limit || 12;
+
   // First, get the ratings for each MCP
   const { data: ratingsData } = await supabase
     .from('mcps_votes')
@@ -29,12 +37,12 @@ async function fetchMCPs(searchQuery: string = '', options: QueryOptions = {}): 
     .from('mcps')
     .select(`
       *,
-      setup_guides:setup_guides!left (
+      setup_guides!left (
         steps,
         command,
         url
       ),
-      features:features!left (
+      features!left (
         title,
         description
       )
@@ -66,11 +74,27 @@ async function fetchMCPs(searchQuery: string = '', options: QueryOptions = {}): 
     query = query.eq('is_promoted', true);
   }
 
+  // Apply sorting
+  if (options.sortBy === 'rating') {
+    // For rating sort, we need to handle it client-side
+    query = query.range(cursor, cursor + limit - 1);
+  } else if (options.sortBy === 'last_updated' || options.sortBy === 'created_at') {
+    query = query
+      .order(options.sortBy, { ascending: options.sortDirection === 'asc' })
+      .range(cursor, cursor + limit - 1);
+  } else {
+    // Default weighted sort
+    query = query
+      .order('is_promoted', { ascending: false })
+      .order('last_updated', { ascending: false })
+      .range(cursor, cursor + limit - 1);
+  }
+
   const { data, error } = await query;
 
   if (error) throw error;
 
-  // Transform the data and apply sorting
+  // Transform the data
   const transformedData = (data || []).map(mcp => ({
     ...mcp,
     setupGuide: mcp.setup_guides?.[0] ? {
@@ -87,43 +111,31 @@ async function fetchMCPs(searchQuery: string = '', options: QueryOptions = {}): 
     rating: ratings.get(mcp.id) || 0
   }));
 
-  // Apply sorting
-  return transformedData.sort((a, b) => {
-    if (options.sortBy === 'weighted') {
-      // Custom weighted sorting
-      if (a.is_promoted !== b.is_promoted) {
-        return b.is_promoted ? 1 : -1;
-      }
-      if (a.rating !== b.rating) {
-        return b.rating - a.rating;
-      }
-      return new Date(b.last_updated).getTime() - new Date(a.last_updated).getTime();
-    }
-    
-    if (options.sortBy === 'rating') {
-      return options.sortDirection === 'asc' ? a.rating - b.rating : b.rating - a.rating;
-    }
-    
-    if (options.sortBy === 'last_updated' || options.sortBy === 'created_at') {
-      const aDate = new Date(a[options.sortBy]).getTime();
-      const bDate = new Date(b[options.sortBy]).getTime();
-      return options.sortDirection === 'asc' ? aDate - bDate : bDate - aDate;
-    }
+  // Apply rating sort if needed
+  if (options.sortBy === 'rating') {
+    transformedData.sort((a, b) => 
+      options.sortDirection === 'asc' ? a.rating - b.rating : b.rating - a.rating
+    );
+  }
 
-    // Default to weighted sort
-    if (a.is_promoted !== b.is_promoted) {
-      return b.is_promoted ? 1 : -1;
-    }
-    if (a.rating !== b.rating) {
-      return b.rating - a.rating;
-    }
-    return new Date(b.last_updated).getTime() - new Date(a.last_updated).getTime();
-  });
+  // Determine if there are more pages
+  const nextCursor = data?.length === limit ? cursor + limit : null;
+
+  return {
+    mcps: transformedData,
+    nextCursor
+  };
 }
 
 export function useMCPsQuery(searchQuery: string = '', options: QueryOptions = {}) {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ['mcps', searchQuery, options],
-    queryFn: () => fetchMCPs(searchQuery, options),
+    queryFn: ({ pageParam = 0 }) => fetchMCPsPage({ 
+      cursor: pageParam, 
+      searchQuery, 
+      options: { ...options, limit: 12 } 
+    }),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: 0,
   });
 } 

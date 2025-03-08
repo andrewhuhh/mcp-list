@@ -9,89 +9,11 @@
 
 ## Progress Tracking
 
-### Completed MCPs (Already in DB)
-#### Reference Implementations
-- [x] AWS KB Retrieval
-- [x] Brave Search
-- [x] Browser Tools
-- [x] EverArt
-- [x] Everything
-- [x] Fetch
-- [x] Filesystem
-- [x] Git
-- [x] Redis
+### Phase 1: Database Population ✅
+All MCPs have been prepared for database population. See mcp-list.md for current status.
 
-### Next Batch (To Be Added)
-#### Reference Implementations
-- [x] GitHub
-  - Categories: ['development', 'version-control', 'collaboration']
-  - SEO: ['git', 'version control', 'code hosting']
-  - Apps: ['cursor', 'windsurf']
-  - Status: official
-
-- [x] Memory
-  - Categories: ['storage', 'cache']
-  - SEO: ['cache', 'key-value store', 'temporary storage']
-  - Apps: ['cursor', 'windsurf']
-  - Status: official
-
-- [x] Postgres (Imported)
-  - Categories: ['database', 'storage']
-  - SEO: ['postgresql', 'sql', 'database']
-  - Apps: ['cursor', 'windsurf']
-  - Status: official
-
-#### Community Implementations
-- [x] Rememberizer AI (Imported)
-  - Categories: ['ai', 'knowledge-base']
-  - SEO: ['knowledge retrieval', 'ai memory', 'knowledge base']
-  - Apps: ['cursor', 'windsurf']
-  - Status: community
-
-- [x] Replicate (Imported)
-  - Categories: ['ai', 'machine-learning', 'image-generation']
-  - SEO: ['ml models', 'ai models', 'predictions']
-  - Apps: ['cursor', 'windsurf']
-  - Status: community
-
-- [x] Rijksmuseum (Imported)
-  - Categories: ['art', 'culture', 'images']
-  - SEO: ['art', 'museum', 'collections']
-  - Apps: ['cursor', 'windsurf']
-  - Status: community
-
-- [~] Salesforce MCP (Ready for Import)
-  - Categories: ['crm', 'business', 'sales']
-  - SEO: ['crm', 'sales', 'customer management']
-  - Apps: ['cursor', 'windsurf']
-  - Status: community
-
-- [~] Scholarly (Ready for Import)
-  - Categories: ['research', 'academic', 'search']
-  - SEO: ['academic', 'research papers', 'scholarly articles']
-  - Apps: ['cursor', 'windsurf']
-  - Status: community
-
-### Remaining MCPs (To Be Processed)
-#### Community Implementations
-- [ ] SearXNG
-- [ ] Snowflake
-- [ ] Spotify
-- [ ] Stripe
-- [ ] TMDB
-- [ ] Tavily Search
-- [ ] Ticketmaster
-- [ ] Todoist
-- [ ] Travel Planner
-- [ ] Vega-Lite
-- [ ] Video Editor
-- [ ] WildFly MCP
-- [ ] Windows CLI
-- [ ] World Bank Data API
-- [ ] X (Twitter) by EnesCinr
-- [ ] X (Twitter) by vidhupv
-- [ ] XMind
-- [ ] YouTube
+### Phase 2: Setup Guides (Next)
+Preparing to add setup guides for all MCPs.
 
 ## SQL Template
 ```sql

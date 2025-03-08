@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useMCPsQuery } from '../hooks/queries/useMCPsQuery';
 import { MCPCard } from '../components/directory/MCPCard';
 import { SearchInput } from '../components/ui/search-input';
@@ -11,6 +11,8 @@ import {
 import { Button } from "../components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { Skeleton } from "../components/ui/skeleton";
 
 type SortOption = {
   label: string;
@@ -26,16 +28,43 @@ const sortOptions: SortOption[] = [
   { label: 'Oldest', value: 'created_at', direction: 'asc' },
 ];
 
+const MCPCardSkeleton = () => (
+  <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 h-[280px]">
+    <Skeleton className="h-6 w-3/4 mb-4" />
+    <Skeleton className="h-4 w-full mb-2" />
+    <Skeleton className="h-4 w-5/6 mb-6" />
+    <div className="space-y-2">
+      <Skeleton className="h-4 w-1/4" />
+      <Skeleton className="h-4 w-1/3" />
+    </div>
+  </div>
+);
+
 export const Directory = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>(sortOptions[0]);
+  const { ref: loadMoreRef, inView } = useInView();
 
-  const { data: mcps = [], isLoading: loading, error } = useMCPsQuery(searchQuery, {
+  const {
+    data,
+    isLoading: loading,
+    error,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage
+  } = useMCPsQuery(searchQuery, {
     sortBy: sortBy.value,
     sortDirection: sortBy.direction,
   });
 
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
   const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+  const allMCPs = data?.pages.flatMap(page => page.mcps) ?? [];
 
   return (
     <div className="h-full">
@@ -75,10 +104,12 @@ export const Directory = () => {
         </DropdownMenu>
       </div>
 
-      {/* Loading State */}
-      {loading && (
-        <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground"></div>
+      {/* Loading State - Initial */}
+      {loading && !data && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <MCPCardSkeleton key={i} />
+          ))}
         </div>
       )}
 
@@ -106,7 +137,7 @@ export const Directory = () => {
         <div className="flex flex-col">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
-              {mcps.map((mcp) => (
+              {allMCPs.map((mcp) => (
                 <motion.div
                   key={mcp.id}
                   layout
@@ -124,11 +155,23 @@ export const Directory = () => {
               ))}
             </AnimatePresence>
           </div>
+
+          {/* Load More - Infinite Scroll Trigger */}
+          {(hasNextPage || isFetchingNextPage) && (
+            <div
+              ref={loadMoreRef}
+              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-6"
+            >
+              {isFetchingNextPage && Array.from({ length: 3 }).map((_, i) => (
+                <MCPCardSkeleton key={`loading-${i}`} />
+              ))}
+            </div>
+          )}
         </div>
       )}
 
       {/* Empty State */}
-      {!loading && !error && mcps.length === 0 && (
+      {!loading && !error && allMCPs.length === 0 && (
         <div className="text-center py-12">
           <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
