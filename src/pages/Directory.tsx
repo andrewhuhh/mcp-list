@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useMCPsQuery } from '../hooks/queries/useMCPsQuery';
 import { MCPCard } from '../components/directory/MCPCard';
+import { SearchInput } from '../components/ui/search-input';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,31 +46,33 @@ export const Directory = () => {
       </div>
       
       {/* Search and Sort */}
-      <div className="mb-4 flex flex-col md:flex-row max-w-3xl mx-auto px-4 sm:px-6 space-y-4">
+      <div className="md:mb-12 mb-6 flex flex-col md:flex-row max-w-3xl mx-auto sm:px-6 space-y-4 md:space-y-0 md:space-x-4 justify-center items-center">
         {/* Search Bar */}
-        <div className="relative flex-1">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by name or description..."
-            className="w-full px-4 py-2.5 text-sm sm:text-base border border-border rounded-lg focus:outline-none focus:ring-1 focus:ring-ring/40 focus:shadow-md focus:shadow-ring/20 dark:bg-background dark:text-foreground"
-          />
-          <svg
-            className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        </div>
+        <SearchInput
+          placeholder="Search by name or description..."
+          onSearch={setSearchQuery}
+          debounceMs={500}
+        />
+
+        {/* Sort Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="h-10 px-3 w-full md:w-auto">
+              Sort by: {sortBy.label}
+              <ChevronDown className="ml-1 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[200px]">
+            {sortOptions.map((option) => (
+              <DropdownMenuItem
+                key={option.label}
+                onClick={() => setSortBy(option)}
+              >
+                {option.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Loading State */}
@@ -101,27 +104,6 @@ export const Directory = () => {
       {/* MCP List */}
       {!loading && !error && (
         <div className="flex flex-col">
-                  {/* Sort Row */}
-        <div className="flex justify-end mb-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="h-9 px-3">
-                Sort by: {sortBy.label}
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[200px]">
-              {sortOptions.map((option) => (
-                <DropdownMenuItem
-                  key={option.label}
-                  onClick={() => setSortBy(option)}
-                >
-                  {option.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
               {mcps.map((mcp) => (

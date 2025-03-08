@@ -38,8 +38,8 @@ export function RootLayout() {
           <Link to="/" className="flex items-center space-x-2">
             <span className="font-mono font-bold">MCP List</span>
           </Link>
-          <div className="flex items-center space-x-6">
-            <nav className="flex items-center space-x-6">
+          <div className="flex items-center space-x-3">
+            <nav className="flex items-center space-x-4">
               <Link to="/docs" className="text-sm font-medium transition-colors hover:text-primary">
                 Guide
               </Link>
