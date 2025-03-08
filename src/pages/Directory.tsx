@@ -13,6 +13,7 @@ import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Skeleton } from "../components/ui/skeleton";
+import { Helmet } from 'react-helmet-async';
 
 type SortOption = {
   label: string;
@@ -71,6 +72,25 @@ export const Directory = () => {
 
   return (
     <div className="h-full">
+      <Helmet>
+        <title>MCP List - Browse Model Context Protocols</title>
+        <meta name="description" content="Browse and discover Model Context Protocol (MCP) tools and services. Find the perfect MCP implementation for your AI integration needs." />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "MCP List Directory",
+            "description": "Browse and discover Model Context Protocol (MCP) tools and services",
+            "url": "https://mcp.modelcontextprotocol.ai",
+            "about": {
+              "@type": "Thing",
+              "name": "Model Context Protocol",
+              "description": "A standardized way for applications to communicate with AI models"
+            }
+          })}
+        </script>
+      </Helmet>
+      
       {/* Header */}
       <div className="mb-8 mt-8 text-center">
         <h1 className="text-3xl font-bold mb-2 text-foreground">Discover MCP Servers</h1>

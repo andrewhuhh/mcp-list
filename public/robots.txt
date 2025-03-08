@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://mcp.modelcontextprotocol.ai/sitemap.xml
+
+# Optimize crawling
+Crawl-delay: 10 
