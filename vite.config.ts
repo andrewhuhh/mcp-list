@@ -3,23 +3,22 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react({
-      jsxRuntime: 'automatic',
-      jsxImportSource: 'react',
-      babel: {
-        plugins: [
-          ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }]
-        ]
-      }
-    })
-  ],
+  plugins: [react()],
   base: '/',
   build: {
     assetsDir: 'assets',
     rollupOptions: {
       output: {
         assetFileNames: 'assets/[name].[ext]'
+      }
+    }
+  },
+  server: {
+    proxy: {
+      // Catch-all fallback
+      '/*': {
+        target: '/',
+        rewrite: () => '/index.html'
       }
     }
   }
