@@ -57,7 +57,7 @@ export function RootLayout() {
       <footer className="border-t py-6 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex items-center justify-between max-w-7xl mx-auto">
           <p className="text-sm text-muted-foreground">
-            Built by the community, for the community.
+            Built by <a href="https://x.com/andrwhcom" target="_blank" rel="noopener noreferrer" className="underline">@andrwhcom</a> with ❤️
           </p>
           <nav className="flex items-center space-x-4">
             <a
