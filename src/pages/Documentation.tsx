@@ -1,9 +1,9 @@
-import { CodeBlock } from '../components/CodeBlock';
+import { CodeBlock } from '../components/blocks/CodeBlock';
 
 export const Documentation = () => {
   return (
-    <div className="h-full mt-8">
-      <h1 className="text-3xl font-bold mb-8 text-foreground">Model Context Protocol Documentation</h1>
+    <div className="h-full mt-8 max-w-3xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8 text-foreground">A Guide to the Model Context Protocol</h1>
       
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4 text-foreground">What is MCP?</h2>

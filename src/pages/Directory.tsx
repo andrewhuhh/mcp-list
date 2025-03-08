@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMCPsQuery } from '../hooks/queries/useMCPsQuery';
-import { MCPCard } from '../components/MCPCard';
+import { MCPCard } from '../components/directory/MCPCard';
 import {
   DropdownMenu,
   DropdownMenuContent,

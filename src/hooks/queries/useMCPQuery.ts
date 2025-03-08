@@ -26,11 +26,9 @@ async function fetchMCP(id: string): Promise<MCP> {
   return {
     ...data,
     setupGuide: data.setup_guides?.[0] ? {
-      cursor: {
-        steps: data.setup_guides[0].steps,
-        command: data.setup_guides[0].command || undefined,
-        url: data.setup_guides[0].url || undefined
-      }
+      steps: data.setup_guides[0].steps,
+      command: data.setup_guides[0].command || undefined,
+      url: data.setup_guides[0].url || undefined
     } : undefined,
     features: data.features?.map((feature: { title: string; description: string }) => ({
       title: feature.title,

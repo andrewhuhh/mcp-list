@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { uploadImage } from '../lib/supabase';
+import { uploadImage } from '../../lib/supabase';
 
 interface ImageUploadProps {
   bucket: 'logos' | 'thumbnails';

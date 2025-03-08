@@ -1,10 +1,10 @@
-import type { MCP } from '../types/mcp';
-import { useVotes } from '../hooks/useVotes';
-import { useTheme } from '../hooks/useTheme';
-import { Card, CardHeader, CardContent, CardFooter } from './ui/card';
-import { VoteButtons } from './VoteButtons';
+import type { MCP } from '../../types/mcp';
+import { useVotes } from '../../hooks/useVotes';
+import { useTheme } from '../../hooks/useTheme';
+import { Card, CardHeader, CardContent, CardFooter } from '../ui/card';
+import { VoteButtons } from '../voting/VoteButtons';
 import { useEffect, useRef, useState } from 'react';
-import { Badge } from './ui/badge';
+import { Badge } from '../ui/badge';
 import { useNavigate } from 'react-router-dom';
 
 interface MCPCardProps {

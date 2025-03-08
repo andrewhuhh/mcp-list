@@ -1,18 +1,18 @@
 import { Link, Outlet } from 'react-router-dom';
-import { ThemeToggle } from '../components/ThemeToggle';
+import { ThemeToggle } from '../components/themes/ThemeToggle';
 
 export function RootLayout() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="sticky top-0 z-50 py-3 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex items-center justify-between max-w-7xl mx-auto">
+        <div className="container flex items-center justify-between max-w-4xl mx-auto">
           <Link to="/" className="flex items-center space-x-2">
             <span className="font-mono font-bold">MCP List</span>
           </Link>
           <div className="flex items-center space-x-6">
             <nav className="flex items-center space-x-6">
               <Link to="/docs" className="text-sm font-medium transition-colors hover:text-primary">
-                Quickstart
+                Guide
               </Link>
               <Link to="/submit" className="text-sm font-medium transition-colors hover:text-primary">
                 Publish

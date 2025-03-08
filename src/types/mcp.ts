@@ -4,8 +4,21 @@ export type Status = 'official' | 'community';
 export type Pricing = 'free' | 'paid' | 'enterprise';
 
 export interface Feature {
+  id: string;
+  mcp_id: string;
   title: string;
   description: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SetupGuide {
+  id: string;
+  mcp_id: string;
+  steps: string[];
+  command?: string | null;
+  url?: string | null;
+  created_at: string;
 }
 
 export interface MCP {
@@ -19,22 +32,10 @@ export interface MCP {
   pricing: Pricing;
   categories: string[];
   github_url: string;
-  logo_url?: string;
-  thumbnail_url?: string;
+  logo_url?: string | null;
   last_updated: string;
   created_at: string;
   is_promoted?: boolean;
   features?: Feature[];
-  setupGuide?: {
-    cursor: {
-      steps: string[];
-      command?: string;
-      url?: string;
-    };
-  };
-  quickstart?: {
-    prerequisites?: string[];
-    installation?: string;
-    usage?: string;
-  };
+  setupGuide?: SetupGuide;
 } 

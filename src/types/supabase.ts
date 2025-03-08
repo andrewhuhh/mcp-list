@@ -13,48 +13,74 @@ export interface Database {
         Row: {
           id: string
           name: string
+          company: string
           description: string
-          author: string
+          hosting_type: string
+          status: 'official' | 'community'
+          setup_type: string
+          pricing: string
+          categories: string[]
           github_url: string
           logo_url: string | null
-          thumbnail_url: string | null
+          last_updated: string
+          created_at: string
+          is_promoted: boolean | null
+        }
+        Insert: {
+          id?: string
+          name: string
+          company: string
+          description: string
+          hosting_type: string
           status: 'official' | 'community'
-          tags: string[]
+          setup_type: string
+          pricing: string
           categories: string[]
-          verified: boolean
-          quick_setup: boolean
+          github_url: string
+          logo_url?: string | null
+          last_updated?: string
+          created_at?: string
+          is_promoted?: boolean | null
+        }
+        Update: {
+          id?: string
+          name?: string
+          company?: string
+          description?: string
+          hosting_type?: string
+          status?: 'official' | 'community'
+          setup_type?: string
+          pricing?: string
+          categories?: string[]
+          github_url?: string
+          logo_url?: string | null
+          last_updated?: string
+          created_at?: string
+          is_promoted?: boolean | null
+        }
+      }
+      features: {
+        Row: {
+          id: string
+          mcp_id: string
+          title: string
+          description: string
           created_at: string
           updated_at: string
         }
         Insert: {
           id?: string
-          name: string
+          mcp_id: string
+          title: string
           description: string
-          author: string
-          github_url: string
-          logo_url?: string | null
-          thumbnail_url?: string | null
-          status: 'official' | 'community'
-          tags: string[]
-          categories: string[]
-          verified?: boolean
-          quick_setup?: boolean
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
-          name?: string
+          mcp_id?: string
+          title?: string
           description?: string
-          author?: string
-          github_url?: string
-          logo_url?: string | null
-          thumbnail_url?: string | null
-          status?: 'official' | 'community'
-          tags?: string[]
-          categories?: string[]
-          verified?: boolean
-          quick_setup?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -67,7 +93,6 @@ export interface Database {
           command: string | null
           url: string | null
           created_at: string
-          updated_at: string
         }
         Insert: {
           id?: string
@@ -76,7 +101,6 @@ export interface Database {
           command?: string | null
           url?: string | null
           created_at?: string
-          updated_at?: string
         }
         Update: {
           id?: string
@@ -85,7 +109,6 @@ export interface Database {
           command?: string | null
           url?: string | null
           created_at?: string
-          updated_at?: string
         }
       }
     }

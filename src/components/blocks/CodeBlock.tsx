@@ -1,5 +1,5 @@
 import React from 'react';
-import { CopyButton } from './CopyButton';
+import { CopyButton } from '../blocks/CopyButton';
 
 interface CodeBlockProps {
   code: string;

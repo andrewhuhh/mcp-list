@@ -1,6 +1,6 @@
 import React from 'react';
-import { VoteType, VoteStats } from '../types/vote';
-import { cn } from '../lib/utils';
+import { VoteType, VoteStats } from '../../types/vote';
+import { cn } from '../../lib/utils';
 
 interface VoteButtonsProps {
   stats: VoteStats;
