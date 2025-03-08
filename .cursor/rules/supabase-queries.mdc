@@ -1,0 +1,6 @@
+---
+description: for supabase MCP tooling
+globs: 
+alwaysApply: false
+---
+you are only able to execute read requests via supabase queries thru the MCP tool. for any write requests, give me the sql to execute on the website

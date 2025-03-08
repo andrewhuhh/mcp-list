@@ -32,9 +32,9 @@ export const Submit = () => {
     setIsSubmitting(true);
 
     try {
-      // Insert MCP
-      const { data: mcpData, error: mcpError } = await supabase
-        .from('mcps')
+      // Insert into pending_mcps instead of direct tables
+      const { data: pendingMcpData, error: pendingMcpError } = await supabase
+        .from('pending_mcps')
         .insert({
           name: formData.name,
           company: formData.company,
@@ -45,45 +45,20 @@ export const Submit = () => {
           pricing: formData.pricing,
           categories: formData.categories,
           github_url: formData.github_url,
-          logo_url: formData.logo_url || null
+          logo_url: formData.logo_url || null,
+          features: formData.features.filter(f => f.title && f.description),
+          setup_guide: {
+            steps: formData.setup_guide.steps.filter(step => step),
+            command: formData.setup_guide.command || null,
+            url: formData.setup_guide.url || null
+          }
         })
         .select()
         .single();
 
-      if (mcpError) throw mcpError;
+      if (pendingMcpError) throw pendingMcpError;
 
-      // Insert features
-      if (formData.features.some(f => f.title && f.description)) {
-        const { error: featuresError } = await supabase
-          .from('features')
-          .insert(
-            formData.features
-              .filter(f => f.title && f.description)
-              .map(feature => ({
-                mcp_id: mcpData.id,
-                title: feature.title,
-                description: feature.description
-              }))
-          );
-
-        if (featuresError) throw featuresError;
-      }
-
-      // Insert setup guide
-      if (formData.setup_guide.steps.some(step => step)) {
-        const { error: setupError } = await supabase
-          .from('setup_guides')
-          .insert({
-            mcp_id: mcpData.id,
-            steps: formData.setup_guide.steps.filter(step => step),
-            command: formData.setup_guide.command || null,
-            url: formData.setup_guide.url || null
-          });
-
-        if (setupError) throw setupError;
-      }
-
-      toast.success("Your MCP implementation has been submitted successfully.");
+      toast.success("Your MCP implementation has been submitted for review. We'll get back to you soon!");
 
       // Reset form
       setFormData({
