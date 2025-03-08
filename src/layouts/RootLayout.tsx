@@ -1,9 +1,13 @@
 import { Link, Outlet } from 'react-router-dom';
 import { ThemeToggle } from '../components/themes/ThemeToggle';
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
 export function RootLayout() {
   return (
     <div className="min-h-screen flex flex-col relative">
+      <SpeedInsights />
+      <Analytics />
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div 
           className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--primary)_0%,_transparent_70%)] opacity-[0.03] dark:opacity-[0.07]"
