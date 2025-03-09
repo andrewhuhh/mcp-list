@@ -32,8 +32,8 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
       role="link" 
       tabIndex={0}
     >
-      <CardHeader className="flex flex-col sm:flex-row items-start gap-2 p-4 sm:gap-4 pb-0 justify-between">
-        <div className="flex flex-col lg:flex-row gap-3">
+      <CardHeader className="flex flex-row items-start gap-2 p-6 sm:gap-4 pb-0 justify-between">
+        <div className="flex flex-row gap-3">
           {/* Logo and Name */}
           {mcp.logo_url && (
             <img 
@@ -72,9 +72,22 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
         />
       </CardHeader>
 
-      <CardContent className="p-4 pt-3">
-        <p className="text-sm text-muted-foreground line-clamp-3 sm:line-clamp-3">{mcp.summary}</p>
+      <CardContent className="p-6 pt-3">
+        <p className="text-base text-muted-foreground line-clamp-3 sm:line-clamp-3">{mcp.summary}</p>
       </CardContent>
+
+      <div className={`mt-auto p-6 py-4 ${mcp.is_recommended ? 'border-t border-blue-500/50' : 'border-t'}`}>
+        <div className="flex items-center gap-2">
+          {mcp.app_integrations?.map((app) => (
+            <img
+              key={app}
+              src={`/assets/logos/${app.toLowerCase()}.jpeg`}
+              alt={`${app} integration`}
+              className="w-5 h-5 object-contain rounded-sm opacity-75"
+            />
+          ))}
+        </div>
+      </div>
     </Card>
   );
 }; 

@@ -231,14 +231,14 @@ async def get_data(query: str) -> dict:
       {/* Hero Section */}
       <div className="pt-16 pb-8 rounded-lg">
         <div className="max-w-4xl mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-4 text-foreground">Model Context Protocol (MCP)</h1>
-          <p className="text-xl text-muted-foreground mb-8">
+          <h1 className="text-4xl md:text-5xl font-semibold mb-4 tracking-tighter bg-gradient-to-br from-primary to-primary/80 bg-clip-text text-transparent">Model Context Protocol (MCP)</h1>
+          <p className="md:text-xl text-lg font-semibold text-muted-foreground tracking-tight mb-8">
             The universal standard for connecting AI systems with data sources, replacing fragmented integrations with a single protocol.
           </p>
           <SearchInput 
             placeholder="Search documentation..."
             onSearch={setSearchQuery}
-            className="max-w-xl"
+            className="w-full"
           />
         </div>
       </div>

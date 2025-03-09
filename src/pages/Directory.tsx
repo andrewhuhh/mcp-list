@@ -1,22 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useMCPsQuery } from '../hooks/queries/useMCPsQuery';
 import { MCPCard } from '../components/directory/MCPCard';
 import { SearchInput } from '../components/ui/search-input';
 import { useSearchParams } from 'react-router-dom';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
-import { Button } from "../components/ui/button";
-import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Skeleton } from "../components/ui/skeleton";
 import { Helmet } from 'react-helmet-async';
+import { CollapsibleSection } from '../components/directory/CollapsibleSection';
+import type { MCP } from '../types/mcp';
+import { Button } from '../components/ui/button';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent } from '../components/ui/dropdown-menu';
+import { ChevronDown } from 'lucide-react';
 
-const GRID_LAYOUT_CLASS = "grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 mt-0 sm:mt-6";
+const GRID_LAYOUT_CLASS = "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4 mt-0";
 
 type SortOption = {
   label: string;
@@ -43,6 +40,67 @@ const MCPCardSkeleton = () => (
     </div>
   </div>
 );
+
+// Define our main categories and their display names
+const CATEGORIES = {
+  RECOMMENDED: {
+    title: "Recommended MCPs",
+    filter: (mcp: MCP) => mcp.is_recommended,
+  },
+  FEATURED: {
+    title: "Featured MCPs",
+    filter: (mcp: MCP) => mcp.is_promoted,
+  },
+  OFFICIAL: {
+    title: "Official MCPs",
+    filter: (mcp: MCP) => mcp.status === 'official',
+  },
+  COMMUNITY: {
+    title: "Community MCPs",
+    filter: (mcp: MCP) => !mcp.is_promoted && !mcp.is_recommended && mcp.status !== 'official',
+  },
+} as const;
+
+type CategoryKey = keyof typeof CATEGORIES;
+
+const searchInMCP = (mcp: MCP, query: string) => {
+  const searchQuery = query.toLowerCase();
+  
+  // Basic fields (direct string matches)
+  const basicFields = [
+    mcp.name,
+    mcp.company,
+    mcp.summary,
+    mcp.description,
+    mcp.hosting_type,
+    mcp.status,
+    mcp.setup_type,
+    mcp.pricing
+  ].map(field => (field || '').toLowerCase());
+
+  // Array fields (need to check each item)
+  const arrayFields = [
+    mcp.categories,
+    mcp.seo_aliases,
+    mcp.app_integrations
+  ].flat().map(field => (field || '').toLowerCase());
+
+  // Feature fields (need to check title and description)
+  const featureFields = (mcp.features || []).flatMap(feature => [
+    feature.title.toLowerCase(),
+    feature.description.toLowerCase()
+  ]);
+
+  // Combine all searchable content
+  const allSearchableContent = [
+    ...basicFields,
+    ...arrayFields,
+    ...featureFields
+  ];
+
+  // Check if any field contains the search query
+  return allSearchableContent.some(field => field.includes(searchQuery));
+};
 
 export const Directory = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -92,6 +150,21 @@ export const Directory = () => {
     index === allMCPs.findIndex(m => m.id === mcp.id)
   );
 
+  // Organize MCPs into categories
+  const categorizedMCPs = useMemo(() => {
+    if (!uniqueMCPs) return {} as Record<CategoryKey, MCP[]>;
+    
+    const filtered = uniqueMCPs.filter(mcp => {
+      if (!searchQuery) return true;
+      return searchInMCP(mcp, searchQuery);
+    });
+
+    return Object.entries(CATEGORIES).reduce((acc, [key, category]) => {
+      acc[key as CategoryKey] = filtered.filter(category.filter);
+      return acc;
+    }, {} as Record<CategoryKey, MCP[]>);
+  }, [uniqueMCPs, searchQuery]);
+
   return (
     <div className="h-full">
       <Helmet>
@@ -114,13 +187,13 @@ export const Directory = () => {
       </Helmet>
       
       {/* Header */}
-      <div className="mb-8 mt-8 text-center">
-        <h1 className="text-4xl md:text-5xl font-semibold mb-2 tracking-tighter bg-gradient-to-br from-primary to-primary/80 bg-clip-text text-transparent">Discover MCP Servers</h1>
+      <div className="mb-8 mt-12 text-center">
+        <h1 className="text-4xl md:text-5xl font-semibold mb-4 tracking-tighter bg-gradient-to-br from-primary to-primary/80 bg-clip-text text-transparent">Discover MCP Servers</h1>
         <p className="md:text-xl text-lg font-semibold text-muted-foreground tracking-tight">Browse and discover Model Context Protocol (MCP) tools and services</p>
       </div>
       
       {/* Search and Sort */}
-      <div className="md:mb-12 mb-6 flex flex-col md:flex-row max-w-3xl mx-auto sm:px-6 space-y-4 md:space-y-0 md:space-x-4 justify-center items-center">
+      <div className="md:mb-12 mb-6 flex flex-col md:flex-row max-w-3xl mx-auto sm:px-6 space-y-2 md:space-y-0 md:space-x-4 justify-center items-center">
         {/* Search Bar */}
         <SearchInput
           placeholder="Search by name or description..."
@@ -130,24 +203,26 @@ export const Directory = () => {
         />
 
         {/* Sort Dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="h-10 px-3 w-full md:w-auto">
-              Sort by: {sortBy.label}
-              <ChevronDown className="ml-1 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[200px]">
-            {sortOptions.map((option) => (
-              <DropdownMenuItem
-                key={option.label}
-                onClick={() => setSortBy(option)}
-              >
-                {option.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div hidden>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-10 px-3 w-full md:w-auto">
+                        Sort by: {sortBy.label}
+                        <ChevronDown className="ml-1 h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-[200px]">
+                      {sortOptions.map((option) => (
+                        <DropdownMenuItem
+                          key={option.label}
+                          onClick={() => setSortBy(option)}
+                        >
+                          {option.label}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+        </div>
       </div>
 
       {/* Loading State - Initial */}
@@ -181,49 +256,67 @@ export const Directory = () => {
       {/* MCP List */}
       {!loading && !error && (
         <div className="flex flex-col">
-          <div className={GRID_LAYOUT_CLASS}>
-            <AnimatePresence mode="popLayout">
-              {uniqueMCPs.map((mcp) => (
-                <motion.div
-                  key={mcp.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{
-                    opacity: { duration: 0.2 },
-                    layout: { duration: 0.3 },
-                    scale: { duration: 0.2 }
-                  }}
-                >
-                  <MCPCard mcp={mcp} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
+          {(Object.entries(CATEGORIES) as [CategoryKey, typeof CATEGORIES[CategoryKey]][]).map(([key, category]) => {
+            const mcps = categorizedMCPs[key] || [];
+            if (mcps.length === 0) return null;
 
-          {/* Load More - Infinite Scroll Trigger */}
-          {(hasNextPage || isFetchingNextPage) && (
-            <div
-              ref={loadMoreRef}
-              className={GRID_LAYOUT_CLASS}
-            >
-              {isFetchingNextPage && Array.from({ length: 3 }).map((_, i) => (
-                <MCPCardSkeleton key={`loading-${i}`} />
-              ))}
+            return (
+              <CollapsibleSection
+                key={key}
+                title={category.title}
+                count={mcps.length}
+                defaultOpen={true}
+              >
+                <div className={GRID_LAYOUT_CLASS}>
+                  <AnimatePresence mode="popLayout">
+                    {mcps.map((mcp) => (
+                      <motion.div
+                        key={mcp.id}
+                        layout
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{
+                          opacity: { duration: 0.2 },
+                          layout: { duration: 0.3 },
+                          scale: { duration: 0.2 }
+                        }}
+                      >
+                        <MCPCard mcp={mcp} />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+
+                {/* Add loading indicator within each non-empty category */}
+                {key === 'COMMUNITY' && (hasNextPage || isFetchingNextPage) && (
+                  <div
+                    ref={loadMoreRef}
+                    className="mt-4"
+                  >
+                    {isFetchingNextPage && (
+                      <div className={GRID_LAYOUT_CLASS}>
+                        {Array.from({ length: 3 }).map((_, i) => (
+                          <MCPCardSkeleton key={`loading-${i}`} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </CollapsibleSection>
+            );
+          })}
+
+          {/* Empty State */}
+          {Object.values(categorizedMCPs).every(mcps => mcps.length === 0) && (
+            <div className="text-center py-12">
+              <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">No MCPs Found</h3>
+              <p className="text-gray-500 dark:text-gray-400">Try adjusting your search terms</p>
             </div>
           )}
-        </div>
-      )}
-
-      {/* Empty State */}
-      {!loading && !error && uniqueMCPs.length === 0 && (
-        <div className="text-center py-12">
-          <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-          </svg>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">No MCPs Found</h3>
-          <p className="text-gray-500 dark:text-gray-400">Try adjusting your search terms</p>
         </div>
       )}
     </div>

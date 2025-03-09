@@ -44,7 +44,7 @@ export function MobileNav() {
               to="/submit"
               className={`${getLinkStyles("/submit")} pb-6`}
             >
-              Publish
+              Add Server
             </Link>
           </SheetClose>
           <div className="pt-6 border-t">

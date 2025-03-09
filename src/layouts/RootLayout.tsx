@@ -14,16 +14,35 @@ export function RootLayout() {
         <ScrollToTop />
         <SpeedInsights />
         <Analytics />
-        <div className="absolute inset-0 -z-10 overflow-hidden">
+        
+        {/* Gradient background */}
+        <div 
+          className="fixed top-0 left-0 right-0 -z-20"
+          style={{ 
+            height: '200vh',
+            transform: 'translateY(-60%)'
+          }}
+          aria-hidden="true"
+        >
           <div 
-            className="absolute inset-0 bg-[radial-gradient(circle_at_center,_hsl(221,_83%,_53%)_0%,_transparent_70%)] opacity-[0.3] dark:opacity-[0.7]"
-            style={{ transform: 'scale(1.5) translateY(-55%)' }}
+            className="w-full h-full bg-[radial-gradient(circle_at_center,_hsl(221,_83%,_53%)_0%,_transparent_70%)] opacity-[0.3] dark:opacity-[0.5]"
+            style={{ 
+              transform: 'scale(1.5)',
+            }}
           />
+        </div>
+
+        {/* Pattern background */}
+        <div 
+          className="fixed inset-0 -z-10"
+          aria-hidden="true"
+        >
           <svg
             className="absolute h-full w-full opacity-[0.03] dark:opacity-[0.07]"
             xmlns="http://www.w3.org/2000/svg"
             width="100%"
             height="100%"
+            preserveAspectRatio="xMidYMid slice"
           >
             <defs>
               <linearGradient id="fade-mask" x1="0" y1="0" x2="0" y2="1">
@@ -64,6 +83,8 @@ export function RootLayout() {
             />
           </svg>
         </div>
+
+        {/* Rest of the layout */}
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
           <div className="container flex h-14 max-w-7xl mx-auto items-center">
             <div className="flex-1 flex items-center">
@@ -80,7 +101,7 @@ export function RootLayout() {
                 Guide
               </Link>
               <Link to="/submit" className="text-sm font-medium transition-colors hover:text-primary">
-                Publish
+                Add Server
               </Link>
             </nav>
 
