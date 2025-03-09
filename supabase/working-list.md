@@ -15,40 +15,50 @@ All MCPs have been prepared for database population. See mcp-list.md for current
 ### Phase 2: Setup Guides (Next)
 Preparing to add setup guides for all MCPs.
 
-## SQL Template
-```sql
-INSERT INTO mcps (
-  id,
-  name,
-  company,
-  description,
-  summary,
-  hosting_type,
-  status,
-  setup_type,
-  pricing,
-  categories,
-  github_url,
-  seo_aliases,
-  app_integrations,
-  created_at,
-  last_updated
-)
-VALUES (
-  gen_random_uuid(),
-  '[NAME]',
-  '[COMPANY]',
-  '[DESCRIPTION]',
-  '[SUMMARY]',
-  '[HOSTING_TYPE]',
-  '[STATUS]',
-  '[SETUP_TYPE]',
-  '[PRICING]',
-  ARRAY['category1', 'category2']::varchar[],
-  'https://github.com/modelcontextprotocol/servers',
-  ARRAY['alias1', 'alias2']::varchar[],
-  ARRAY['cursor', 'windsurf']::varchar[],
-  NOW(),
-  NOW()
-);
-``` 
+## MCP Setup Guide Batches
+
+### Batch 1 (Reference Implementations)
+1. AWS KB Retrieval MCP
+2. Brave Search MCP
+3. Browser Tools
+4. EverArt MCP
+5. Everything MCP
+6. Fetch MCP
+7. Filesystem MCP
+8. Git MCP
+9. GitHub
+10. Memory
+11. Postgres
+12. Redis MCP
+13. Rememberizer AI
+14. Replicate
+15. Rijksmuseum
+
+### Batch 2
+1. Salesforce MCP
+2. Scholarly
+3. SearXNG
+4. Snowflake
+5. Spotify
+6. Stripe
+7. TMDB
+8. Tavily Search
+9. Ticketmaster
+10. Todoist
+11. Travel Planner
+12. Vega-Lite
+13. Video Editor
+14. WildFly MCP
+15. Windows CLI
+
+### Batch 3
+1. World Bank Data API
+2. XMind
+3. X (Twitter) by EnesCinr
+4. X (Twitter) by vidhupv
+5. YouTube
+
+## Setup Guide Implementations
+
+### Batch 1 Template - AWS KB Retrieval
+```
