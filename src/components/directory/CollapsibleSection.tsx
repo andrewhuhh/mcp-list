@@ -1,23 +1,22 @@
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
 import { cn } from "../../lib/utils";
 
 interface CollapsibleSectionProps {
   title: string;
   children: React.ReactNode;
   count: number;
-  defaultOpen?: boolean;
+  isOpen: boolean;
+  onToggle: (isOpen: boolean) => void;
 }
 
 export const CollapsibleSection = ({
   title,
   children,
   count,
-  defaultOpen = true,
+  isOpen,
+  onToggle,
 }: CollapsibleSectionProps) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
   return (
     <motion.div 
       className="mb-8"
@@ -25,7 +24,7 @@ export const CollapsibleSection = ({
       transition={{ duration: 0.2, type: "tween" }}
     >
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => onToggle(!isOpen)}
         className={cn(
           "w-full flex items-center justify-between py-2 px-4 rounded-lg",
           "hover:bg-primary/10 backdrop-blur-sm transition-colors duration-200",

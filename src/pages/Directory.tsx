@@ -46,18 +46,22 @@ const CATEGORIES = {
   RECOMMENDED: {
     title: "Recommended MCPs",
     filter: (mcp: MCP) => mcp.is_recommended,
+    id: 'recommended'
   },
   FEATURED: {
     title: "Featured MCPs",
     filter: (mcp: MCP) => mcp.is_promoted,
+    id: 'featured'
   },
   OFFICIAL: {
     title: "Official MCPs",
     filter: (mcp: MCP) => mcp.status === 'official',
+    id: 'official'
   },
   COMMUNITY: {
     title: "Community MCPs",
     filter: (mcp: MCP) => !mcp.is_promoted && !mcp.is_recommended && mcp.status !== 'official',
+    id: 'community'
   },
 } as const;
 
@@ -108,14 +112,41 @@ export const Directory = () => {
   const [sortBy, setSortBy] = useState<SortOption>(sortOptions[0]);
   const { ref: loadMoreRef, inView } = useInView();
 
+  // Get open sections from URL
+  const openSections = useMemo(() => {
+    const sections = searchParams.get('sections')?.split(',') || [];
+    return new Set(sections.length ? sections : Object.values(CATEGORIES).map(c => c.id));
+  }, [searchParams]);
+
+  // Update URL when sections change
+  const handleSectionToggle = (sectionId: string, isOpen: boolean) => {
+    const newSections = new Set(openSections);
+    if (isOpen) {
+      newSections.add(sectionId);
+    } else {
+      newSections.delete(sectionId);
+    }
+    
+    const params = new URLSearchParams(searchParams);
+    const sectionsArray = Array.from(newSections);
+    if (sectionsArray.length === Object.keys(CATEGORIES).length) {
+      params.delete('sections'); // Default state, no need to store
+    } else {
+      params.set('sections', sectionsArray.join(','));
+    }
+    setSearchParams(params);
+  };
+
   // Update URL when search changes
   const handleSearch = (value: string) => {
     setSearchQuery(value);
+    const params = new URLSearchParams(searchParams);
     if (value) {
-      setSearchParams({ search: value });
+      params.set('search', value);
     } else {
-      setSearchParams({});
+      params.delete('search');
     }
+    setSearchParams(params);
   };
 
   // Update search when URL changes
@@ -265,7 +296,8 @@ export const Directory = () => {
                 key={key}
                 title={category.title}
                 count={mcps.length}
-                defaultOpen={true}
+                isOpen={openSections.has(category.id)}
+                onToggle={(isOpen) => handleSectionToggle(category.id, isOpen)}
               >
                 <div className={GRID_LAYOUT_CLASS}>
                   <AnimatePresence mode="popLayout">
