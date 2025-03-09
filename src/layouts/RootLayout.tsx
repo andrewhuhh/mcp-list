@@ -65,14 +65,14 @@ export function RootLayout() {
           </svg>
         </div>
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container flex h-14 max-w-7xl mx-auto justify-between items-center">
-            <div className="flex items-center">
+          <div className="container flex h-14 max-w-7xl mx-auto items-center">
+            <div className="flex-1 flex items-center">
               <Link to="/" className="flex items-center space-x-2">
-                <span className="font-sans font-semibold">MCP-List</span>
+                <img src="/assets/Vector.png" alt="MCP-List" className="w-auto h-4" />
               </Link>
             </div>
 
-            <nav className="hidden md:flex items-center space-x-6">
+            <nav className="hidden md:flex items-center space-x-6 absolute left-1/2 transform -translate-x-1/2">
               <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">
                 Directory
               </Link>
@@ -84,14 +84,16 @@ export function RootLayout() {
               </Link>
             </nav>
 
-            <div className="hidden md:flex items-center space-x-4">
-              <AuthButton />
-              <div className="hidden">
-                <ThemeToggle />
+            <div className="flex-1 flex items-center justify-end space-x-4">
+              <div className="hidden md:flex items-center space-x-4">
+                <AuthButton />
+                <div className="hidden">
+                  <ThemeToggle />
+                </div>
               </div>
-            </div>
 
-            <MobileNav />
+              <MobileNav />
+            </div>
           </div>
         </header>
         <main className="container py-6 mb-6 flex-1 max-w-7xl mx-auto">

@@ -4,6 +4,8 @@ import { HostingType, SetupType, Status, Pricing } from '../types/mcp';
 import { toast } from 'sonner';
 import { Badge } from '../components/ui/badge';
 
+const FORM_SECTION_STYLES = "space-y-4 bg-card/50 backdrop-blur-sm rounded-xl p-6";
+
 export const Submit = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -213,9 +215,10 @@ export const Submit = () => {
       </div>
       
       <form onSubmit={handleSubmit} className="space-y-6">
+
         {/* Basic Information */}
-        <div className="space-y-4 bg-card rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-foreground">Basic Information</h2>
+        <div className={FORM_SECTION_STYLES}>
+          <h2 className="text-2xl italic font-normal text-primary/50 tracking-tight">1. Basic Information</h2>
           
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-2 text-foreground">
@@ -287,8 +290,8 @@ export const Submit = () => {
         </div>
 
         {/* Configuration */}
-        <div className="space-y-4 bg-card rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-foreground">Configuration</h2>
+        <div className={FORM_SECTION_STYLES}>
+          <h2 className="text-2xl italic font-normal text-primary/50 tracking-tight">2. Configuration</h2>
           
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -400,8 +403,8 @@ export const Submit = () => {
         </div>
 
         {/* Links */}
-        <div className="space-y-4 bg-card rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-foreground">Links</h2>
+        <div className={FORM_SECTION_STYLES}>
+          <h2 className="text-2xl italic font-normal text-primary/50 tracking-tight">3. Links</h2>
           
           <div>
             <label htmlFor="github_url" className="block text-sm font-medium mb-2 text-foreground">
@@ -436,9 +439,9 @@ export const Submit = () => {
         </div>
 
         {/* Features */}
-        <div className="space-y-4 bg-card rounded-lg p-6">
+        <div className={FORM_SECTION_STYLES}>
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-foreground">Features</h2>
+            <h2 className="text-2xl italic font-normal text-primary/50 tracking-tight">4. Features</h2>
             <button
               type="button"
               onClick={addFeature}
@@ -485,9 +488,9 @@ export const Submit = () => {
         </div>
 
         {/* Setup Guide */}
-        <div className="space-y-4 bg-card rounded-lg p-6">
+        <div className={FORM_SECTION_STYLES}>
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-foreground">Setup Guide</h2>
+            <h2 className="text-2xl italic font-normal text-primary/50 tracking-tight">5. Setup Guide</h2>
             <button
               type="button"
               onClick={addStep}

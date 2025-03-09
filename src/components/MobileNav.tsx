@@ -1,10 +1,17 @@
 import { Menu } from "lucide-react"
 import { Button } from "./ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
-import { Link } from "react-router-dom"
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "./ui/sheet"
+import { Link, useLocation } from "react-router-dom"
 import { AuthButton } from "./auth/AuthButton"
 
 export function MobileNav() {
+  const location = useLocation()
+
+  const getLinkStyles = (path: string) => {
+    const isActive = location.pathname === path
+    return `text-3xl font-medium ${isActive ? 'opacity-100' : 'opacity-40'} hover:opacity-100 transition-all hover:text-primary`
+  }
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -14,27 +21,34 @@ export function MobileNav() {
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="h-[56%] rounded-t-[10px] px-6">
+        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
         <nav className="flex flex-col space-y-6 mt-6">
-          <Link
-            to="/"
-            className="text-base font-medium transition-colors hover:text-primary"
-          >
-            Directory
-          </Link>
-          <Link
-            to="/docs"
-            className="text-base font-medium transition-colors hover:text-primary"
-          >
-            Guide
-          </Link>
-          <Link
-            to="/submit"
-            className="text-base font-medium transition-colors hover:text-primary"
-          >
-            Publish
-          </Link>
+          <SheetClose asChild>
+            <Link
+              to="/"
+              className={getLinkStyles("/")}
+            >
+              Directory
+            </Link>
+          </SheetClose>
+          <SheetClose asChild>
+            <Link
+              to="/docs"
+              className={getLinkStyles("/docs")}
+            >
+              Guide
+            </Link>
+          </SheetClose>
+          <SheetClose asChild>
+            <Link
+              to="/submit"
+              className={`${getLinkStyles("/submit")} pb-6`}
+            >
+              Publish
+            </Link>
+          </SheetClose>
           <div className="pt-6 border-t">
-            <AuthButton />
+            <AuthButton variant="mobile" />
           </div>
         </nav>
       </SheetContent>
