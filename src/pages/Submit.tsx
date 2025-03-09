@@ -201,12 +201,20 @@ export const Submit = () => {
   };
 
   return (
-    <div className="h-full max-w-2xl mx-auto pb-12">
-      <h1 className="text-3xl font-bold mt-6 mb-8 text-foreground">Submit Your MCP Implementation</h1>
+    <div className="h-full max-w-3xl mx-auto p-6 pb-12">
+      
+      {/* Header */}
+      <div className="mt-6 mb-8 text-foreground px-6">
+        <h1 className="text-3xl font-bold mb-4  ">Submit Your MCP Implementation</h1>
+        <p className="text-muted-foreground text-sm">
+          Thank you for your interest in submitting your MCP implementation to the directory.
+          Please fill out the form below to submit your implementation.
+        </p>
+      </div>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Information */}
-        <div className="space-y-4">
+        <div className="space-y-4 bg-card rounded-lg p-6">
           <h2 className="text-xl font-semibold text-foreground">Basic Information</h2>
           
           <div>
@@ -279,7 +287,7 @@ export const Submit = () => {
         </div>
 
         {/* Configuration */}
-        <div className="space-y-4">
+        <div className="space-y-4 bg-card rounded-lg p-6">
           <h2 className="text-xl font-semibold text-foreground">Configuration</h2>
           
           <div className="grid grid-cols-2 gap-4">
@@ -392,7 +400,7 @@ export const Submit = () => {
         </div>
 
         {/* Links */}
-        <div className="space-y-4">
+        <div className="space-y-4 bg-card rounded-lg p-6">
           <h2 className="text-xl font-semibold text-foreground">Links</h2>
           
           <div>
@@ -428,7 +436,7 @@ export const Submit = () => {
         </div>
 
         {/* Features */}
-        <div className="space-y-4">
+        <div className="space-y-4 bg-card rounded-lg p-6">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold text-foreground">Features</h2>
             <button
@@ -477,7 +485,7 @@ export const Submit = () => {
         </div>
 
         {/* Setup Guide */}
-        <div className="space-y-4">
+        <div className="space-y-4 bg-card rounded-lg p-6">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold text-foreground">Setup Guide</h2>
             <button
