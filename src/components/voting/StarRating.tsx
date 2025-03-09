@@ -25,9 +25,20 @@ export const StarRating: React.FC<StarRatingProps> = ({
         onVote('up');
       }}
       className={cn(
-        'flex items-center gap-1.5 text-sm font-semibold rounded-full bg-gray-200 border border-gray-300 py-0.5 px-2',
-        hasVoted ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400' : 'text-gray-500 hover:text-yellow-400 hover:bg-yellow-400/10 hover:border-yellow-400',
-        'transition-colors duration-200',
+        'flex items-center gap-1.5 text-sm font-semibold rounded-full',
+        'border py-0.5 px-2 transition-colors duration-200',
+        hasVoted ? [
+          'text-yellow-600 dark:text-yellow-400',
+          'bg-yellow-100/50 dark:bg-yellow-400/10',
+          'border-yellow-300 dark:border-yellow-500'
+        ] : [
+          'text-gray-700 dark:text-gray-300',
+          'bg-gray-100 dark:bg-gray-800',
+          'border-gray-300 dark:border-gray-600',
+          'hover:text-yellow-600 dark:hover:text-yellow-400',
+          'hover:bg-yellow-100/50 dark:hover:bg-yellow-400/10',
+          'hover:border-yellow-300 dark:hover:border-yellow-500'
+        ],
         className
       )}
       aria-label={hasVoted ? 'Already starred' : 'Star'}

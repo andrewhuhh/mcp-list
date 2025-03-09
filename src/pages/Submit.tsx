@@ -201,7 +201,7 @@ export const Submit = () => {
   };
 
   return (
-    <div className="h-full max-w-3xl mx-auto p-6 pb-12">
+    <div className="h-full max-w-4xl mx-auto pb-12">
       
       {/* Header */}
       <div className="mt-6 mb-8 text-foreground px-6">

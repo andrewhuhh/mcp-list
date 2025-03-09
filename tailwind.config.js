@@ -20,7 +20,7 @@ module.exports = {
         DEFAULT: '-0.025em', // -2.5%
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Geist', 'sans-serif'],
         mono: ['IBM Plex Mono', 'monospace'],
       },
       fontWeight: {
