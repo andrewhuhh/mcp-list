@@ -75,7 +75,9 @@ async function fetchMCPsPage({ cursor, searchQuery, options }: PageParam): Promi
 
   // Apply search filter if query exists
   if (searchQuery) {
-    query = query.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,categories.cs.{${searchQuery}}`);
+    query = query.or(
+      `name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,categories.cs.{${searchQuery}},app_integrations.cs.{${searchQuery}}`
+    );
   }
 
   // Apply filters

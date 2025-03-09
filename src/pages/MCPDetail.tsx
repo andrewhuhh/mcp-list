@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import type { MCP } from '../types/mcp';
 import { useMCPQuery } from '../hooks/queries/useMCPQuery';
 import { VoteButtons } from '../components/voting/VoteButtons';
@@ -98,6 +98,7 @@ export const MCPDetail = () => {
   const { stats, vote } = useVotes(mcp?.id || '');
   const isDark = useTheme();
   const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+  const navigate = useNavigate();
 
   // Format the last updated date
   const lastUpdated = mcp ? new Date(mcp.last_updated) : new Date();
@@ -489,12 +490,16 @@ export const MCPDetail = () => {
                 <h2 className="text-xl font-semibold mb-4 text-card-foreground">Categories</h2>
                 <div className="flex flex-wrap gap-2">
                   {mcp.categories.map((category: string) => (
-                    <span 
+                    <button 
                       key={category} 
-                      className="px-2.5 py-1 bg-muted text-muted-foreground text-sm rounded-full"
+                      onClick={() => navigate(`/?search=${encodeURIComponent(category)}`)}
+                      className="px-2.5 py-1 bg-muted text-muted-foreground text-sm rounded-full 
+                        hover:bg-primary/10 hover:text-primary active:bg-primary/20 
+                        transition-all duration-200 cursor-pointer
+                        focus:outline-none focus:ring-2 focus:ring-ring/40"
                     >
                       {category}
-                    </span>
+                    </button>
                   ))}
                 </div>
               </div>

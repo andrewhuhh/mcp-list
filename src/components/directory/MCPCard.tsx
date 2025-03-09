@@ -187,12 +187,18 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
           {/* Categories */}
           <div ref={categoriesRef} className="flex flex-nowrap gap-1.5 overflow-hidden">
             {visibleCategories.map((category) => (
-              <span 
+              <button 
                 key={category}
-                className="px-2.5 py-1 text-sm rounded-sm bg-muted text-foreground/80 font-semibold tracking-tight whitespace-nowrap"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/?search=${encodeURIComponent(category)}`);
+                }}
+                className="px-2.5 py-1 text-sm rounded-sm bg-muted text-foreground/80 font-semibold tracking-tight whitespace-nowrap 
+                  hover:bg-primary/10 hover:text-primary active:bg-primary/20 transition-all duration-200 
+                  focus:outline-none focus:ring-2 focus:ring-ring/40"
               >
                 {category}
-              </span>
+              </button>
             ))}
             {hasMore && (
               <span 

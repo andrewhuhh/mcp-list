@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useMCPsQuery } from '../hooks/queries/useMCPsQuery';
 import { MCPCard } from '../components/directory/MCPCard';
 import { SearchInput } from '../components/ui/search-input';
+import { useSearchParams } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,9 +43,28 @@ const MCPCardSkeleton = () => (
 );
 
 export const Directory = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [sortBy, setSortBy] = useState<SortOption>(sortOptions[0]);
   const { ref: loadMoreRef, inView } = useInView();
+
+  // Update URL when search changes
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+    if (value) {
+      setSearchParams({ search: value });
+    } else {
+      setSearchParams({});
+    }
+  };
+
+  // Update search when URL changes
+  useEffect(() => {
+    const searchFromUrl = searchParams.get('search');
+    if (searchFromUrl !== searchQuery) {
+      setSearchQuery(searchFromUrl || '');
+    }
+  }, [searchParams]);
 
   const {
     data,
@@ -102,7 +122,8 @@ export const Directory = () => {
         {/* Search Bar */}
         <SearchInput
           placeholder="Search by name or description..."
-          onSearch={setSearchQuery}
+          onSearch={handleSearch}
+          value={searchQuery}
           debounceMs={500}
         />
 

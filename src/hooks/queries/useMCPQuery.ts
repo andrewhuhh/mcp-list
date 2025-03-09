@@ -86,12 +86,9 @@ export const useMCPsQuery = (filters?: {
 
       // Apply filters
       if (filters?.search) {
-        query = query.or(`
-          name.ilike.%${filters.search}%,
-          description.ilike.%${filters.search}%,
-          seo_aliases.cs.{${filters.search}},
-          categories.cs.{${filters.search}}
-        `);
+        query = query.or(
+          `name.ilike.%${filters.search}%,description.ilike.%${filters.search}%,seo_aliases.cs.{${filters.search}},categories.cs.{${filters.search}},app_integrations.cs.{${filters.search}}`
+        );
       }
 
       if (filters?.categories?.length) {
