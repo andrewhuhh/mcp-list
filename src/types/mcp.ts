@@ -37,6 +37,7 @@ export interface MCP {
   last_updated: string;
   created_at: string;
   is_promoted?: boolean;
+  is_recommended?: boolean;
   features?: Feature[];
   setupGuide?: SetupGuide;
   seo_aliases: string[];

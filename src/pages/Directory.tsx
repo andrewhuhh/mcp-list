@@ -150,7 +150,7 @@ export const Directory = () => {
 
       {/* Loading State - Initial */}
       {loading && !data && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 mt-6">
           {Array.from({ length: 6 }).map((_, i) => (
             <MCPCardSkeleton key={i} />
           ))}
@@ -179,7 +179,7 @@ export const Directory = () => {
       {/* MCP List */}
       {!loading && !error && (
         <div className="flex flex-col">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 mt-6">
             <AnimatePresence mode="popLayout">
               {uniqueMCPs.map((mcp) => (
                 <motion.div
@@ -204,7 +204,7 @@ export const Directory = () => {
           {(hasNextPage || isFetchingNextPage) && (
             <div
               ref={loadMoreRef}
-              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-6"
+              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 mt-6"
             >
               {isFetchingNextPage && Array.from({ length: 3 }).map((_, i) => (
                 <MCPCardSkeleton key={`loading-${i}`} />
