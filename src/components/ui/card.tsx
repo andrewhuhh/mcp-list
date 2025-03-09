@@ -30,9 +30,9 @@ const Card = React.forwardRef<
       }
       const distance = Math.sqrt(center.x ** 2 + center.y ** 2)
 
-      card.style.setProperty("--rx", `${(-center.y / 50)}deg`)
-      card.style.setProperty("--ry", `${(center.x / 50)}deg`)
-      card.style.setProperty("--distance", `${Math.min(distance, 50)}px`)
+      card.style.setProperty("--rx", `${(-center.y / 40)}deg`)
+      card.style.setProperty("--ry", `${(center.x / 40)}deg`)
+      card.style.setProperty("--distance", `${Math.min(distance, 40)}px`)
     }
 
     const handleMouseEnter = () => {
@@ -83,7 +83,7 @@ const Card = React.forwardRef<
     <Component
       ref={cardRef}
       className={cn(
-        "rounded-lg border bg-card text-card-foreground shadow-sm",
+        "rounded-2xl border bg-card/50 text-card-foreground shadow-sm backdrop-blur-sm",
         interactive && "transition-transform duration-200 transform-gpu style-3d cursor-pointer",
         className
       )}

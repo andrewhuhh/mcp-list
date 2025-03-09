@@ -2,48 +2,80 @@ import { Link, Outlet } from 'react-router-dom';
 import { ThemeToggle } from '../components/themes/ThemeToggle';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
+import { AuthProvider } from '../contexts/AuthContext';
+import { AuthButton } from '../components/auth/AuthButton';
+import { ScrollToTop } from '../components/ScrollToTop';
+import { MobileNav } from '../components/MobileNav';
 
 export function RootLayout() {
   return (
-    <div className="min-h-screen flex flex-col relative">
-      <SpeedInsights />
-      <Analytics />
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--primary)_0%,_transparent_70%)] opacity-[0.03] dark:opacity-[0.07]"
-          style={{ transform: 'scale(1.5)' }}
-        />
-        <svg
-          className="absolute h-full w-full opacity-[0.03] dark:opacity-[0.07]"
-          xmlns="http://www.w3.org/2000/svg"
-          width="100%"
-          height="100%"
-        >
-          <defs>
-            <pattern
-              id="grid-pattern"
-              width="40"
-              height="40"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M 40 0 L 0 0 0 40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid-pattern)" />
-        </svg>
-      </div>
-      <header className="sticky top-0 z-50 py-3 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex items-center justify-between max-w-4xl mx-auto">
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="font-mono font-bold">MCP List</span>
-          </Link>
-          <div className="flex items-center space-x-5">
-            <nav className="flex items-center space-x-6">
+    <AuthProvider>
+      <div className="min-h-screen flex flex-col relative">
+        <ScrollToTop />
+        <SpeedInsights />
+        <Analytics />
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-[radial-gradient(circle_at_center,_hsl(221,_83%,_53%)_0%,_transparent_70%)] opacity-[0.3] dark:opacity-[0.7]"
+            style={{ transform: 'scale(1.5) translateY(-55%)' }}
+          />
+          <svg
+            className="absolute h-full w-full opacity-[0.03] dark:opacity-[0.07]"
+            xmlns="http://www.w3.org/2000/svg"
+            width="100%"
+            height="100%"
+          >
+            <defs>
+              <linearGradient id="fade-mask" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="white" stopOpacity="1" />
+                <stop offset="50%" stopColor="white" stopOpacity="1" />
+                <stop offset="100%" stopColor="white" stopOpacity="0" />
+              </linearGradient>
+              <pattern
+                id="grid-pattern"
+                width="40"
+                height="40"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 40 0 L 0 0 0 40"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                />
+              </pattern>
+              <mask id="combined-mask">
+                <rect width="100%" height="100%" fill="white" />
+                <rect width="100%" height="100%" fill="url(#fade-mask)" />
+                <image
+                  href="/assets/pattern.webp"
+                  width="100%"
+                  height="100%"
+                  preserveAspectRatio="xMidYMid slice"
+                  opacity="0.8"
+                />
+              </mask>
+            </defs>
+            <rect 
+              width="100%" 
+              height="100%" 
+              fill="url(#grid-pattern)"
+              mask="url(#combined-mask)"
+            />
+          </svg>
+        </div>
+        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="container flex h-14 max-w-7xl mx-auto justify-between items-center">
+            <div className="flex items-center">
+              <Link to="/" className="flex items-center space-x-2">
+                <span className="font-sans font-semibold">MCP-List</span>
+              </Link>
+            </div>
+
+            <nav className="hidden md:flex items-center space-x-6">
+              <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">
+                Directory
+              </Link>
               <Link to="/docs" className="text-sm font-medium transition-colors hover:text-primary">
                 Guide
               </Link>
@@ -51,30 +83,38 @@ export function RootLayout() {
                 Publish
               </Link>
             </nav>
-            <ThemeToggle />
+
+            <div className="hidden md:flex items-center space-x-4">
+              <AuthButton />
+              <div className="hidden">
+                <ThemeToggle />
+              </div>
+            </div>
+
+            <MobileNav />
           </div>
-        </div>
-      </header>
-      <main className="container py-6 mb-6 flex-1 max-w-7xl mx-auto">
-        <Outlet />
-      </main>
-      <footer className="border-t py-6 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex items-center justify-between max-w-7xl mx-auto">
-          <p className="text-sm text-muted-foreground">
-            Built by <a href="https://x.com/andrwhcom" target="_blank" rel="noopener noreferrer" className="underline">@andrwhcom</a> with ❤️
-          </p>
-          <nav className="flex items-center space-x-4">
-            <a
-              href="https://github.com/modelcontextprotocol/servers"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
-              GitHub
-            </a>
-          </nav>
-        </div>
-      </footer>
-    </div>
+        </header>
+        <main className="container py-6 mb-6 flex-1 max-w-7xl mx-auto">
+          <Outlet />
+        </main>
+        <footer className="border-t py-6 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="container flex items-center justify-between max-w-7xl mx-auto">
+            <p className="text-sm text-muted-foreground">
+              Built by <a href="https://x.com/andrwhcom" target="_blank" rel="noopener noreferrer" className="underline">@andrwhcom</a> with ❤️
+            </p>
+            <nav className="flex items-center space-x-4">
+              <a
+                href="https://github.com/modelcontextprotocol/servers"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium transition-colors hover:text-primary"
+              >
+                GitHub
+              </a>
+            </nav>
+          </div>
+        </footer>
+      </div>
+    </AuthProvider>
   );
 } 

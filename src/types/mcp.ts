@@ -46,16 +46,16 @@ export interface MCP {
   slug: string;
 }
 
+interface UserMetadata {
+  full_name: string;
+  avatar_url: string | null;
+}
+
 export interface MCPReview {
   id: string;
   mcp_id: string;
   user_id: string;
-  rating: number;
   review_text: string;
-  pros: string[];
-  cons: string[];
-  use_case: string;
   created_at: string;
-  helpful_votes: number;
-  is_verified_user: boolean;
+  user_metadata: UserMetadata;
 } 

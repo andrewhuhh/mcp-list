@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import type { MCP } from '../types/mcp';
+import type { MCP, MCPReview } from '../types/mcp';
 import { useMCPQuery } from '../hooks/queries/useMCPQuery';
-import { VoteButtons } from '../components/voting/VoteButtons';
+import { StarRating } from '../components/voting/StarRating';
 import { useVotes } from '../hooks/useVotes';
 import { useTheme } from '../hooks/useTheme';
 import { Card, CardHeader, CardContent, CardFooter } from '../components/ui/card';
 import { CodeBlock } from '../components/blocks/CodeBlock';
 import { PlainCodeBlock } from '../components/blocks/PlainCodeBlock';
 import { MCPMetaTags } from '../components/seo/MCPMetaTags';
+import { ReviewSection } from '../components/reviews/ReviewSection';
+import { supabase } from '../contexts/AuthContext';
+
+const CARD_CONTAINER_CLASSES = "bg-card/60 backdrop-blur-sm rounded-xl shadow-sm p-6 border border-border";
 
 // Platform Config section component
 const PlatformConfigSection: React.FC<{ 
@@ -99,6 +103,49 @@ export const MCPDetail = () => {
   const isDark = useTheme();
   const errorMessage = error instanceof Error ? error.message : 'An error occurred';
   const navigate = useNavigate();
+  const [reviews, setReviews] = useState<MCPReview[]>([]);
+  const [loadingReviews, setLoadingReviews] = useState(true);
+
+  useEffect(() => {
+    if (!mcp?.id) return;
+    
+    const fetchReviews = async () => {
+      try {
+        setLoadingReviews(true);
+        const { data, error } = await supabase
+          .from('mcp_reviews')
+          .select('*')
+          .eq('mcp_id', mcp.id)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setReviews(data || []);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      } finally {
+        setLoadingReviews(false);
+      }
+    };
+
+    fetchReviews();
+  }, [mcp?.id]);
+
+  const handleReviewAdded = async () => {
+    if (!mcp?.id) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('mcp_reviews')
+        .select('*')
+        .eq('mcp_id', mcp.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setReviews(data || []);
+    } catch (error) {
+      console.error('Error refreshing reviews:', error);
+    }
+  };
 
   // Format the last updated date
   const lastUpdated = mcp ? new Date(mcp.last_updated) : new Date();
@@ -182,12 +229,9 @@ export const MCPDetail = () => {
 
       {/* Content */}
       <div className="space-y-6">
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Main content */}
-          <div className="lg:col-span-2 space-y-6">
-
+          <div className="md:col-span-2 space-y-6">
             {/* Header section with gradient background */}
             <div className="flex flex-col-reverse sm:flex-row justify-between items-stretch gap-4 mb-4">
               <Card 
@@ -197,18 +241,21 @@ export const MCPDetail = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 opacity-20" />
                 <CardHeader className="relative z-10 flex flex-col gap-4 p-6">
-                  <div className="flex gap-3">
-                    {mcp.logo_url && (
-                      <img 
-                        src={mcp.logo_url} 
-                        alt={`${mcp.name} logo`} 
-                        className="w-16 h-16 object-contain rounded-lg"
-                      />
-                    )}
-                    <div>
-                      <h1 className="text-2xl font-semibold text-foreground tracking-tight">{mcp.name}</h1>
-                      <p className="text-sm text-muted-foreground font-medium">{mcp.company}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex gap-3">
+                      {mcp.logo_url && (
+                        <img 
+                          src={mcp.logo_url} 
+                          alt={`${mcp.name} logo`} 
+                          className="w-16 h-16 object-contain rounded-lg"
+                        />
+                      )}
+                      <div>
+                        <h1 className="text-2xl font-semibold text-foreground tracking-tight">{mcp.name}</h1>
+                        <p className="text-sm text-muted-foreground font-medium">{mcp.company}</p>
+                      </div>
                     </div>
+                    <StarRating stats={stats} onVote={vote} size="md" />
                   </div>
 
                   {/* Hosting Type */}
@@ -245,9 +292,9 @@ export const MCPDetail = () => {
 
                   {/* Description */}
                   <div className="space-y-2">
-                    <p className="text-md font-medium text-foreground">
+                    {/* <p className="italic text-md font-medium text-foreground">
                       {mcp.summary}
-                    </p>
+                    </p> */}
                     <p className="text-md text-muted-foreground font-inter">
                       {mcp.description}
                     </p>
@@ -267,13 +314,10 @@ export const MCPDetail = () => {
                   </button>
                 </CardFooter>
               </Card>
-              <div className="flex items-center justify-center">
-                <VoteButtons stats={stats} onVote={vote} />
-              </div>
             </div>
 
             {/* Features */}
-            <div className="bg-card rounded-lg shadow-sm p-6 border border-border">
+            <div className={CARD_CONTAINER_CLASSES}>
               <h2 className="text-xl font-semibold mb-4 text-card-foreground">Features</h2>
               {mcp.features && mcp.features.length > 0 ? (
                 <ul className="space-y-4">
@@ -295,7 +339,7 @@ export const MCPDetail = () => {
             </div>
 
             {/* About MCP */}
-            <div className="bg-card rounded-lg shadow-sm p-6 border border-border">
+            <div className={CARD_CONTAINER_CLASSES}>
               <h2 className="text-xl font-semibold mb-4 text-card-foreground">About Model Context Protocol</h2>
               <p className="text-muted-foreground mb-4">
                 The Model Context Protocol (MCP) is a standardized way for applications to communicate with AI models,
@@ -323,190 +367,198 @@ export const MCPDetail = () => {
               </Link>
             </div>
 
-              {/* Setup Guide */}
-              {mcp.setupGuide && (
-                <div className="bg-card rounded-lg shadow-sm p-6 mb-6 border border-border">
-                  <h2 className="text-2xl font-semibold mb-4 text-card-foreground">Setup Guide</h2>
-                  <div className="space-y-6">
-                    {/* Manual Installation Steps */}
-                    {mcp.setupGuide.steps && mcp.setupGuide.steps.length > 0 && (
-                      <div className="space-y-4">
-                        <h3 className="font-medium text-lg text-card-foreground">Manual Installation Steps:</h3>
-                        <ol className="list-decimal pl-6 space-y-4">
-                          {mcp.setupGuide.steps.map((step: string, index: number) => (
-                            <li key={index} className="text-muted-foreground">
-                              {step}
-                            </li>
-                          ))}
-                        </ol>
-                      </div>
-                    )}
+            {/* Setup Guide */}
+            {mcp.setupGuide && (
+              <div className={CARD_CONTAINER_CLASSES}>
+                <h2 className="text-2xl font-semibold mb-4 text-card-foreground">Setup Guide</h2>
+                <div className="space-y-6">
+                  {/* Manual Installation Steps */}
+                  {mcp.setupGuide.steps && mcp.setupGuide.steps.length > 0 && (
+                    <div className="space-y-4">
+                      <h3 className="font-medium text-lg text-card-foreground">Manual Installation Steps:</h3>
+                      <ol className="list-decimal pl-6 space-y-4">
+                        {mcp.setupGuide.steps.map((step: string, index: number) => (
+                          <li key={index} className="text-muted-foreground">
+                            {step}
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
 
-                    {/* Platform-specific Configuration */}
-                    <PlatformConfigSection 
-                      platform={currentPlatform}
-                      setupGuide={mcp.setupGuide}
-                      isDark={isDark}
-                    />
-
-                    {/* Setup Command */}
-                    {mcp.setupGuide.command && (
-                      <div className="space-y-2">
-                        <h3 className="font-medium text-lg text-card-foreground">NPM Command:</h3>
-                        <CodeBlock 
-                          code={mcp.setupGuide.command}
-                          language="bash"
-                        />
-                      </div>
-                    )}
-
-                    {/* Documentation Link */}
-                    {mcp.setupGuide.url && (
-                      <div className="space-y-2">
-                        <h3 className="font-medium text-lg text-card-foreground">Documentation:</h3>
-                        <a 
-                          href={mcp.setupGuide.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-primary hover:text-primary/80 underline underline-offset-4"
-                        >
-                          View Documentation
-                          <svg 
-                            className="w-4 h-4 ml-1" 
-                            fill="none" 
-                            stroke="currentColor" 
-                            viewBox="0 0 24 24" 
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path 
-                              strokeLinecap="round" 
-                              strokeLinejoin="round" 
-                              strokeWidth={2} 
-                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                            />
-                          </svg>
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-              </div>
-
-              {/* Sidebar */}
-              <div className="space-y-6 lg:sticky lg:top-20 lg:self-start">
-              
-              {/* Quickstart */}
-              <div className="bg-card rounded-lg shadow-sm p-6 border border-border">
-                <div className="text-xl font-semibold mb-4 flex items-center text-card-foreground overflow-visible">
-                  <img 
-                    src={`/assets/logos/cursor.jpeg`}
-                    alt="Cursor Icon"
-                    className="w-6 h-6 mr-2 rounded-md opacity-80"
+                  {/* Platform-specific Configuration */}
+                  <PlatformConfigSection 
+                    platform={currentPlatform}
+                    setupGuide={mcp.setupGuide}
+                    isDark={isDark}
                   />
-                  <h2 className="text-xl font-semibold text-card-foreground">Quickstart</h2>
-                </div>
-                
-                {mcp.setupGuide ? (
-                  <div className="space-y-4">
-                    {mcp.setupGuide.command && (
-                      <div>
-                        <h3 className="text-md font-medium text-card-foreground mb-2">Installation</h3>
-                        <div>
-                          <PlainCodeBlock code={mcp.setupGuide.command} />
-                        </div>
-                      </div>
-                    )}
 
-                    {mcp.setupGuide.url && (
-                      <div>
-                        <h3 className="text-md font-medium text-card-foreground mb-2">Documentation</h3>
-                        <a 
-                          href={mcp.setupGuide.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-primary hover:text-primary/80 underline underline-offset-4"
+                  {/* Setup Command */}
+                  {mcp.setupGuide.command && (
+                    <div className="space-y-2">
+                      <h3 className="font-medium text-lg text-card-foreground">NPM Command:</h3>
+                      <CodeBlock 
+                        code={mcp.setupGuide.command}
+                        language="bash"
+                      />
+                    </div>
+                  )}
+
+                  {/* Documentation Link */}
+                  {mcp.setupGuide.url && (
+                    <div className="space-y-2">
+                      <h3 className="font-medium text-lg text-card-foreground">Documentation:</h3>
+                      <a 
+                        href={mcp.setupGuide.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-primary hover:text-primary/80 underline underline-offset-4"
+                      >
+                        View Documentation
+                        <svg 
+                          className="w-4 h-4 ml-1" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24" 
+                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          View Documentation
-                          <svg 
-                            className="w-4 h-4 ml-1" 
-                            fill="none" 
-                            stroke="currentColor" 
-                            viewBox="0 0 24 24" 
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path 
-                              strokeLinecap="round" 
-                              strokeLinejoin="round" 
-                              strokeWidth={2} 
-                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                            />
-                          </svg>
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    No quickstart guide available yet. Check the documentation for setup instructions.
-                  </p>
-                )}
-              </div>
-
-              {/* Repository Info */}
-              <div className="bg-card rounded-lg shadow-sm p-6 border border-border">
-                  <div className="flex items-center mb-4 text-card-foreground">
-                    <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    <h2 className="text-xl font-semibold text-card-foreground">Repository</h2>
-                  </div>
-                <a 
-                  href={mcp.github_url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="inline-flex items-center text-primary hover:text-primary/80 underline underline-offset-4"
-                >
-                  View on GitHub
-                  <svg 
-                    className="w-4 h-4 ml-1" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24" 
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
-                </a>
-              </div>
-
-              {/* Categories */}
-              <div className="bg-card rounded-lg shadow-sm p-6 border border-border">
-                <h2 className="text-xl font-semibold mb-4 text-card-foreground">Categories</h2>
-                <div className="flex flex-wrap gap-2">
-                  {mcp.categories.map((category: string) => (
-                    <button 
-                      key={category} 
-                      onClick={() => navigate(`/?search=${encodeURIComponent(category)}`)}
-                      className="px-2.5 py-1 bg-muted text-muted-foreground text-sm rounded-full 
-                        hover:bg-primary/10 hover:text-primary active:bg-primary/20 
-                        transition-all duration-200 cursor-pointer
-                        focus:outline-none focus:ring-2 focus:ring-ring/40"
-                    >
-                      {category}
-                    </button>
-                  ))}
+                          <path 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            strokeWidth={2} 
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </svg>
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
+            )}
           </div>
 
+          {/* Sidebar */}
+          <div className="space-y-6 md:sticky md:top-20 md:self-start">
+            {/* Quickstart */}
+            <div className={CARD_CONTAINER_CLASSES}>
+              <div className="text-xl font-semibold mb-4 flex items-center text-card-foreground overflow-visible">
+                <img 
+                  src={`/assets/logos/${currentPlatform.toLowerCase()}.jpeg`}
+                  alt={`${currentPlatform} Icon`}
+                  className="w-6 h-6 mr-2 rounded-md opacity-80"
+                />
+                <h2 className="text-xl font-semibold text-card-foreground">Quickstart</h2>
+              </div>
+              
+              {mcp.setupGuide ? (
+                <div className="space-y-4">
+                  {mcp.setupGuide.command && (
+                    <div>
+                      <h3 className="text-md font-medium text-card-foreground mb-2">Installation</h3>
+                      <div>
+                        <PlainCodeBlock code={mcp.setupGuide.command} />
+                      </div>
+                    </div>
+                  )}
+
+                  {mcp.setupGuide.url && (
+                    <div>
+                      <h3 className="text-md font-medium text-card-foreground mb-2">Documentation</h3>
+                      <a 
+                        href={mcp.setupGuide.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-primary hover:text-primary/80 underline underline-offset-4"
+                      >
+                        View Documentation
+                        <svg 
+                          className="w-4 h-4 ml-1" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24" 
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            strokeWidth={2} 
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </svg>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No quickstart guide available yet. Check the documentation for setup instructions.
+                </p>
+              )}
+            </div>
+
+            {/* Repository Info */}
+            <div className={CARD_CONTAINER_CLASSES}>
+              <div className="flex items-center mb-4 text-card-foreground">
+                <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <h2 className="text-xl font-semibold text-card-foreground">Repository</h2>
+              </div>
+              <a 
+                href={mcp.github_url} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-flex items-center text-primary hover:text-primary/80 underline underline-offset-4"
+              >
+                View on GitHub
+                <svg 
+                  className="w-4 h-4 ml-1" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
+              </a>
+            </div>
+
+            {/* Categories */}
+            <div className={CARD_CONTAINER_CLASSES}>
+              <h2 className="text-xl font-semibold mb-4 text-card-foreground">Categories</h2>
+              <div className="flex flex-wrap gap-2">
+                {mcp.categories.map((category: string) => (
+                  <button 
+                    key={category} 
+                    onClick={() => navigate(`/?search=${encodeURIComponent(category)}`)}
+                    className="px-2.5 py-1 bg-muted text-muted-foreground text-sm rounded-full 
+                      hover:bg-primary/10 hover:text-primary active:bg-primary/20 
+                      transition-all duration-200 cursor-pointer
+                      focus:outline-none focus:ring-2 focus:ring-ring/40"
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
+        {/* Reviews Section */}
+        {!loadingReviews && (
+          <div className="mt-8">
+            <ReviewSection
+              mcpId={mcp?.id || ''}
+              reviews={reviews}
+              onReviewAdded={handleReviewAdded}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

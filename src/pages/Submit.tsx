@@ -204,9 +204,9 @@ export const Submit = () => {
     <div className="h-full max-w-4xl mx-auto pb-12">
       
       {/* Header */}
-      <div className="mt-6 mb-8 text-foreground px-6">
-        <h1 className="text-3xl font-bold mb-4  ">Submit Your MCP Implementation</h1>
-        <p className="text-muted-foreground text-sm">
+      <div className="pt-16 mb-8 text-foreground px-6">
+        <h1 className="text-4xl font-bold mb-4  ">Submit Your MCP Implementation</h1>
+        <p className="text-muted-foreground text-xl">
           Thank you for your interest in submitting your MCP implementation to the directory.
           Please fill out the form below to submit your implementation.
         </p>

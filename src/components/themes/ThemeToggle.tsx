@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 export const ThemeToggle: React.FC = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 
   useEffect(() => {
-    // Check system preference and localStorage on mount
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Check localStorage first, then system preference
     const storedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    setTheme(storedTheme || (isDark ? 'dark' : 'light'));
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(storedTheme || (systemPrefersDark ? 'dark' : 'dark')); // Default to dark in both cases
   }, []);
 
   useEffect(() => {

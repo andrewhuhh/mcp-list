@@ -27,6 +27,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
       className={cn(
         'flex items-center gap-1.5 text-sm font-semibold rounded-full',
         'border py-0.5 px-2 transition-colors duration-200',
+        'transition-all duration-200 hover:bg-secondary/50 hover:border-secondary/60 hover:scale-105 hover:drop-shadow-md hover:drop-shadow-[0_4px_6px_rgba(234,179,8,0.5)]',
         hasVoted ? [
           'text-yellow-600 dark:text-yellow-400',
           'bg-yellow-100/50 dark:bg-yellow-400/10',

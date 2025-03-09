@@ -16,7 +16,7 @@ import { useInView } from 'react-intersection-observer';
 import { Skeleton } from "../components/ui/skeleton";
 import { Helmet } from 'react-helmet-async';
 
-const GRID_LAYOUT_CLASS = "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4 mt-6";
+const GRID_LAYOUT_CLASS = "grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 mt-0 sm:mt-6";
 
 type SortOption = {
   label: string;
@@ -115,8 +115,8 @@ export const Directory = () => {
       
       {/* Header */}
       <div className="mb-8 mt-8 text-center">
-        <h1 className="text-3xl font-bold mb-2 text-foreground">Discover MCP Servers</h1>
-        <p className="text-muted-foreground">Browse and discover Model Context Protocol (MCP) tools and services</p>
+        <h1 className="text-4xl md:text-5xl font-semibold mb-2 tracking-tighter bg-gradient-to-br from-primary to-primary/80 bg-clip-text text-transparent">Discover MCP Servers</h1>
+        <p className="md:text-xl text-lg font-semibold text-muted-foreground tracking-tight">Browse and discover Model Context Protocol (MCP) tools and services</p>
       </div>
       
       {/* Search and Sort */}

@@ -4,6 +4,7 @@ import { Card, CardHeader, CardContent } from '../ui/card';
 import { StarRating } from '../voting/StarRating';
 import { Badge } from '../ui/badge';
 import { useNavigate } from 'react-router-dom';
+import { cn } from '../../lib/utils';
 // import { CheckCircle2 } from 'lucide-react';
 
 interface MCPCardProps {
@@ -23,13 +24,16 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
   return (
     <Card 
       as="article" 
-      className="group relative flex flex-col h-full transition-colors hover:border-border/60" 
+      className={cn(
+        "group relative flex flex-col h-full transition-colors hover:border-border/60 bg-background/50 hover:bg-secondary/50 backdrop-blur-md hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.05)]",
+        mcp.is_recommended && "border-blue-500/50 shadow-[0_0_0_1px_rgba(59,130,246,0.1)] bg-gradient-to-br from-blue-50/10 to-blue-100/80 dark:from-blue-950/10 dark:to-blue-900/50 hover:border-blue-500 hover:bg-blue-500/10"
+      )}
       onClick={() => navigate(`/mcps/${getPlatform()}/${mcp.slug}`)} 
       role="link" 
       tabIndex={0}
     >
-      <CardHeader className="flex flex-row items-start gap-4 p-4 pb-0 justify-between">
-        <div className="flex gap-3">
+      <CardHeader className="flex flex-col sm:flex-row items-start gap-2 p-4 sm:gap-4 pb-0 justify-between">
+        <div className="flex flex-col lg:flex-row gap-3">
           {/* Logo and Name */}
           {mcp.logo_url && (
             <img 
@@ -39,9 +43,9 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
             />
           )}
           <div>
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center flex-wrap">
               <div className="flex items-center gap-1.5">
-                <h3 className="text-lg font-semibold text-foreground tracking-tight">{mcp.name}</h3>
+                <h3 className="text-lg/6 font-semibold text-foreground tracking-tight line-clamp-1">{mcp.name}</h3>
                 {/* {mcp.status === 'official' && (
                   <CheckCircle2 className="w-4 h-4 text-blue-500" />
                 )} */}
@@ -52,15 +56,10 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
                     Featured
                   </Badge>
                 )}
-                {mcp.is_recommended && (
-                  <Badge variant="secondary" className="bg-blue-500/10 text-blue-500 hover:bg-blue-500/20">
-                    Recommended
-                  </Badge>
-                )}
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <p className="text-sm text-muted-foreground font-medium">{mcp.company}</p>
+              <p className="font-mono tracking-tight text-sm text-muted-foreground font-medium line-clamp-1">{mcp.company}</p>
             </div>
           </div>
         </div>
@@ -74,7 +73,7 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
       </CardHeader>
 
       <CardContent className="p-4 pt-3">
-        <p className="text-sm text-muted-foreground line-clamp-2">{mcp.summary}</p>
+        <p className="text-sm text-muted-foreground line-clamp-3 sm:line-clamp-3">{mcp.summary}</p>
       </CardContent>
     </Card>
   );
