@@ -29,6 +29,8 @@ const Review = ({
 }) => {
   const { user } = useAuth();
   const maxNestingLevel = 3;
+  // Calculate effective nesting level - caps at 3 for visual nesting but allows deeper threading
+  const effectiveNestingLevel = Math.min(level, 2);
   const [isExpanded, setIsExpanded] = useState(true);
   const [isReplying, setIsReplying] = useState(false);
   const [replyText, setReplyText] = useState('');
@@ -53,53 +55,47 @@ const Review = ({
   };
 
   return (
-    <div className="relative">
-      {/* Thread line */}
-      {level > 0 && (
-        <div 
-          className="absolute left-0 top-0 bottom-0 w-px bg-border"
-          style={{ left: `${level}rem` }}
-        />
-      )}
-      
-      <div className={`relative ${level > 0 ? 'pl-6' : ''}`}>
-        {/* Horizontal thread line */}
-        {level > 0 && (
-          <div 
-            className="absolute left-0 top-4 w-4 h-px bg-border"
-            style={{ left: `${level}rem` }}
-          />
-        )}
-
+      <div className={`relative ${level > 0 ? `ml-${Math.min(6, 2 + effectiveNestingLevel * 2)}` : ''}`}>
         <div className="flex items-start gap-4">
-          {hasReplies && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="p-0 h-6 w-6 rounded-full hover:bg-accent"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? (
-                <ChevronDown className="h-4 w-4" />
-              ) : (
-                <ChevronRight className="h-4 w-4" />
-              )}
-            </Button>
-          )}
-          
           <div className="flex-1">
             <div className="flex items-start gap-3">
-              <Avatar className="h-8 w-8">
-                {review.user_metadata.avatar_url && (
-                  <AvatarImage 
-                    src={review.user_metadata.avatar_url} 
-                    alt={review.user_metadata.full_name} 
-                  />
-                )}
-                <AvatarFallback>
-                  {review.user_metadata.full_name[0].toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+              {hasReplies ? (
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="group relative"
+                >
+                  <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-offset-2 hover:ring-primary/20 transition-all">
+                    {review.user_metadata.avatar_url && (
+                      <AvatarImage 
+                        src={review.user_metadata.avatar_url} 
+                        alt={review.user_metadata.full_name} 
+                      />
+                    )}
+                    <AvatarFallback>
+                      {review.user_metadata.full_name[0].toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="absolute -bottom-1 -right-1 bg-background rounded-full border text-muted-foreground">
+                    {isExpanded ? (
+                      <ChevronDown className="h-3 w-3" />
+                    ) : (
+                      <ChevronRight className="h-3 w-3" />
+                    )}
+                  </div>
+                </button>
+              ) : (
+                <Avatar className="h-8 w-8">
+                  {review.user_metadata.avatar_url && (
+                    <AvatarImage 
+                      src={review.user_metadata.avatar_url} 
+                      alt={review.user_metadata.full_name} 
+                    />
+                  )}
+                  <AvatarFallback>
+                    {review.user_metadata.full_name[0].toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              )}
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">
@@ -124,10 +120,10 @@ const Review = ({
                         }
                         setIsReplying(true);
                       }}
-                      className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
+                      className="h-6 px-2 mb-2 mt-1 text-xs text-muted-foreground hover:text-foreground gap-1 bg-muted/50"
                     >
-                      <MessageSquare className="h-3 w-3 mr-1" />
-                      Reply
+                      <MessageSquare className="h-3 w-3" />
+                      Reply {hasReplies && `(${replies.length})`}
                     </Button>
                   )}
                   
@@ -181,7 +177,6 @@ const Review = ({
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
@@ -321,36 +316,12 @@ export function ReviewSection({ mcpId, reviews, onReviewAdded }: ReviewSectionPr
 
       {/* Reviews List */}
       <Card>
-        <CardContent className="p-6">
+        <CardContent className="p-6 mt-4">
           {threaded.length === 0 ? (
-            <div className="flex flex-col items-center gap-4 py-8">
+            <div className="flex flex-col items-center gap-4 pt-4">
               <p className="text-muted-foreground text-center">
                 No reviews yet. Be the first to review!
               </p>
-              {!user && (
-                <div className="flex flex-col items-center gap-4">
-                  <div className="flex gap-4">
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="flex items-center gap-2"
-                      onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}
-                    >
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png" alt="Google" className="w-5 h-5" />
-                      Google
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="flex items-center gap-2"
-                      onClick={() => supabase.auth.signInWithOAuth({ provider: 'discord' })}
-                    >
-                      <img src="https://cdn-icons-png.flaticon.com/512/4945/4945973.png" alt="Discord" className="w-5 h-5" />
-                      Discord
-                    </Button>
-                  </div>
-                </div>
-              )}
             </div>
           ) : (
             <div className="space-y-6">
@@ -362,6 +333,32 @@ export function ReviewSection({ mcpId, reviews, onReviewAdded }: ReviewSectionPr
                   isSubmitting={isSubmitting}
                 />
               ))}
+            </div>
+          )}
+
+          {!user && (
+            <div className="flex flex-col items-center gap-4 mt-6 pt-4 border-t border-border">
+              <p className="text-sm font-medium text-muted-foreground">Sign in to join the conversation</p>
+              <div className="grid grid-cols-2 gap-4 w-full max-w-sm px-4">
+                <Button
+                  variant="secondary"
+                  size="default"
+                  className="w-full flex items-center justify-center gap-2 py-4 bg-gradient-to-br from-secondary/50 to-secondary/20 hover:from-secondary/90 hover:to-secondary/40 hover:ring-secondary/20 hover:ring-2"
+                  onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}
+                >
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png" alt="Google" className="w-5 h-5" />
+                  Google
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="default"
+                  className="w-full flex items-center justify-center gap-2 py-4 bg-gradient-to-br from-secondary/50 to-secondary/20 hover:from-secondary/90 hover:to-secondary/40 hover:ring-secondary/20 hover:ring-2"
+                  onClick={() => supabase.auth.signInWithOAuth({ provider: 'discord' })}
+                >
+                  <img src="https://cdn-icons-png.flaticon.com/512/4945/4945973.png" alt="Discord" className="w-5 h-5" />
+                  Discord
+                </Button>
+              </div>
             </div>
           )}
         </CardContent>
