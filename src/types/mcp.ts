@@ -58,4 +58,6 @@ export interface MCPReview {
   review_text: string;
   created_at: string;
   user_metadata: UserMetadata;
+  parent_id?: string | null;
+  replies?: MCPReview[];
 } 

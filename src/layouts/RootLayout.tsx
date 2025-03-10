@@ -6,6 +6,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 import { AuthButton } from '../components/auth/AuthButton';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { MobileNav } from '../components/MobileNav';
+import { Toaster } from '../components/ui/sonner';
 
 export function RootLayout() {
   return (
@@ -14,6 +15,7 @@ export function RootLayout() {
         <ScrollToTop />
         <SpeedInsights />
         <Analytics />
+        <Toaster />
         
         {/* Gradient background */}
         <div 

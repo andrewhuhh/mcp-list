@@ -10,6 +10,7 @@ import { CodeBlock } from '../components/blocks/CodeBlock';
 import { PlainCodeBlock } from '../components/blocks/PlainCodeBlock';
 import { MCPMetaTags } from '../components/seo/MCPMetaTags';
 import { ReviewSection } from '../components/reviews/ReviewSection';
+import { ReportDialog } from '../components/directory/ReportDialog';
 import { supabase } from '../contexts/AuthContext';
 
 const CARD_CONTAINER_CLASSES = "bg-card/60 backdrop-blur-sm rounded-xl shadow-sm p-6 border border-border";
@@ -116,7 +117,7 @@ export const MCPDetail = () => {
           .from('mcp_reviews')
           .select('*')
           .eq('mcp_id', mcp.id)
-          .order('created_at', { ascending: false });
+          .order('created_at', { ascending: true });
 
         if (error) throw error;
         setReviews(data || []);
@@ -138,7 +139,7 @@ export const MCPDetail = () => {
         .from('mcp_reviews')
         .select('*')
         .eq('mcp_id', mcp.id)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: true });
 
       if (error) throw error;
       setReviews(data || []);
@@ -212,8 +213,8 @@ export const MCPDetail = () => {
               to={`/mcps/${p.toLowerCase()}/${mcp.slug}`}
               className={`inline-flex items-center px-3 py-1 rounded-md ${
                 p.toLowerCase() === currentPlatform.toLowerCase()
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground hover:text-foreground'
+                  ? 'bg-primary/75 text-primary-foreground backdrop-blur-sm'
+                  : 'bg-muted/10 backdrop-blur-sm text-muted-foreground hover:text-foreground'
               }`}
             >
               <img 
@@ -255,7 +256,10 @@ export const MCPDetail = () => {
                         <p className="text-sm text-muted-foreground font-medium">{mcp.company}</p>
                       </div>
                     </div>
-                    <StarRating stats={stats} onVote={vote} size="md" />
+                    <div className="flex items-center gap-4">
+                      <StarRating stats={stats} onVote={vote} size="md" />
+                      <ReportDialog mcpId={mcp.id} size="md" />
+                    </div>
                   </div>
 
                   {/* Hosting Type */}
