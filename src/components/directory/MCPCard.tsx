@@ -23,7 +23,9 @@ export const MCPCard = ({ mcp }: MCPCardProps) => {
 
   return (
     <Card 
-      as="article" 
+      as="article"
+      interactive
+      enableHover 
       className={cn(
         "group relative flex flex-col h-full transition-colors hover:border-border/60 bg-background/50 hover:bg-secondary/50 backdrop-blur-md hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.05)]",
         mcp.is_recommended && "border-blue-500/50 shadow-[0_0_0_1px_rgba(59,130,246,0.1)] bg-gradient-to-br from-blue-50/10 to-blue-100/80 dark:from-blue-950/10 dark:to-blue-900/50 hover:border-blue-500 hover:bg-blue-500/10"

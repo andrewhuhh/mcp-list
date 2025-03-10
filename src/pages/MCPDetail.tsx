@@ -554,7 +554,11 @@ export const MCPDetail = () => {
         </div>
 
         {/* Reviews Section */}
-        {!loadingReviews && (
+        {loadingReviews ? (
+          <div className="mt-8 flex justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground"></div>
+          </div>
+        ) : (
           <div className="mt-8">
             <ReviewSection
               mcpId={mcp?.id || ''}

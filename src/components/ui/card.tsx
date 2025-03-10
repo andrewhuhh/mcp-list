@@ -6,12 +6,13 @@ const Card = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement> & {
     as?: "div" | "article" | "section"
     interactive?: boolean
+    enableHover?: boolean
   }
->(({ className, as: Component = "div", interactive = true, ...props }, _ref) => {
+>(({ className, as: Component = "div", interactive = false, enableHover = false, ...props }, _ref) => {
   const cardRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
-    if (!interactive || !cardRef.current) return
+    if (!interactive || !enableHover || !cardRef.current) return
 
     const card = cardRef.current
     let bounds: DOMRect
@@ -77,14 +78,14 @@ const Card = React.forwardRef<
       card.removeEventListener("mouseleave", handleMouseLeave)
       document.removeEventListener("mousemove", rotateElement)
     }
-  }, [interactive])
+  }, [interactive, enableHover])
 
   return (
     <Component
       ref={cardRef}
       className={cn(
         "rounded-2xl border bg-card/50 text-card-foreground shadow-sm backdrop-blur-sm",
-        interactive && "transition-transform duration-200 transform-gpu style-3d cursor-pointer",
+        interactive && enableHover && "transition-transform duration-200 transform-gpu style-3d cursor-pointer",
         className
       )}
       {...props}
