@@ -20,19 +20,19 @@
   </url>
   <!-- Cursor MCPs -->
   <url>
-    <loc>https://mcp-list.com/mcps/cursor/aws-kb-retrieval-mcp-aws-kb-retrieval</loc>
+    <loc>https://mcp-list.com/mcps/cursor/aws-kb-retrieval-mcp-amazon-web-services</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/cursor/brave-search-mcp-brave-search</loc>
+    <loc>https://mcp-list.com/mcps/cursor/brave-search-mcp-brave-software</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/cursor/browser-tools-browser-tools</loc>
+    <loc>https://mcp-list.com/mcps/cursor/browser-tools-agentdesk</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -44,19 +44,19 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/cursor/everything-mcp-everything</loc>
+    <loc>https://mcp-list.com/mcps/cursor/everything-mcp-anthropic</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/cursor/fetch-mcp-fetch</loc>
+    <loc>https://mcp-list.com/mcps/cursor/fetch-mcp-zach-caceres</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/cursor/filesystem-mcp-filesystem</loc>
+    <loc>https://mcp-list.com/mcps/cursor/filesystem-mcp-anthropic</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -74,13 +74,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/cursor/memory-memory</loc>
+    <loc>https://mcp-list.com/mcps/cursor/memory-anthropic</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/cursor/postgres-postgres</loc>
+    <loc>https://mcp-list.com/mcps/cursor/postgres-postgresql</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -111,19 +111,19 @@
   </url>
   <!-- Windsurf MCPs -->
   <url>
-    <loc>https://mcp-list.com/mcps/windsurf/aws-kb-retrieval-mcp-aws-kb-retrieval</loc>
+    <loc>https://mcp-list.com/mcps/windsurf/aws-kb-retrieval-mcp-amazon-web-services</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/windsurf/brave-search-mcp-brave-search</loc>
+    <loc>https://mcp-list.com/mcps/windsurf/brave-search-mcp-brave-software</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/windsurf/browser-tools-browser-tools</loc>
+    <loc>https://mcp-list.com/mcps/windsurf/browser-tools-agentdesk</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -135,19 +135,19 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/windsurf/everything-mcp-everything</loc>
+    <loc>https://mcp-list.com/mcps/windsurf/everything-mcp-anthropic</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/windsurf/fetch-mcp-fetch</loc>
+    <loc>https://mcp-list.com/mcps/windsurf/fetch-mcp-zach-caceres</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/windsurf/filesystem-mcp-filesystem</loc>
+    <loc>https://mcp-list.com/mcps/windsurf/filesystem-mcp-anthropic</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -165,13 +165,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/windsurf/memory-memory</loc>
+    <loc>https://mcp-list.com/mcps/windsurf/memory-anthropic</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcps/windsurf/postgres-postgres</loc>
+    <loc>https://mcp-list.com/mcps/windsurf/postgres-postgresql</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
