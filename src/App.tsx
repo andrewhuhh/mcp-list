@@ -5,11 +5,13 @@ import { MCPDetail } from './pages/MCPDetail';
 import { AuthCallback } from './pages/AuthCallback';
 import { Documentation } from './pages/Documentation';
 import { Submit } from './pages/Submit';
+import ErrorPage from './components/error/ErrorPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -30,6 +32,16 @@ const router = createBrowserRouter([
       {
         path: 'submit',
         element: <Submit />,
+      },
+      // Redirect /mcps to home
+      {
+        path: 'mcps',
+        element: <Directory />,
+      },
+      // Catch all unmatched routes
+      {
+        path: '*',
+        element: <ErrorPage />,
       },
     ],
   },

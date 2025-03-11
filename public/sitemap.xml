@@ -18,212 +18,184 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <!-- Cursor MCPs -->
   <url>
-    <loc>https://mcp-list.com/mcp/aws-kb-retrieval-mcp</loc>
+    <loc>https://mcp-list.com/cursor/aws-kb-retrieval-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/brave-search-mcp</loc>
+    <loc>https://mcp-list.com/cursor/brave-search-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/browser-tools</loc>
+    <loc>https://mcp-list.com/cursor/browser-tools</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/everart-mcp</loc>
+    <loc>https://mcp-list.com/cursor/everart-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/everything-mcp</loc>
+    <loc>https://mcp-list.com/cursor/everything-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/fetch-mcp</loc>
+    <loc>https://mcp-list.com/cursor/fetch-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/filesystem-mcp</loc>
+    <loc>https://mcp-list.com/cursor/filesystem-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/github</loc>
+    <loc>https://mcp-list.com/cursor/github</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/git-mcp</loc>
+    <loc>https://mcp-list.com/cursor/git-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/memory</loc>
+    <loc>https://mcp-list.com/cursor/memory</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/postgres</loc>
+    <loc>https://mcp-list.com/cursor/postgres</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/redis-mcp</loc>
+    <loc>https://mcp-list.com/cursor/redis-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/rememberizer-ai</loc>
+    <loc>https://mcp-list.com/cursor/replicate</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/replicate</loc>
+    <loc>https://mcp-list.com/cursor/rijksmuseum</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/rijksmuseum</loc>
+    <loc>https://mcp-list.com/cursor/salesforce-mcp</loc>
+    <lastmod>2025-03-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <!-- Windsurf MCPs -->
+  <url>
+    <loc>https://mcp-list.com/windsurf/aws-kb-retrieval-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/salesforce-mcp</loc>
+    <loc>https://mcp-list.com/windsurf/brave-search-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/scholarly</loc>
+    <loc>https://mcp-list.com/windsurf/browser-tools</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/searxng</loc>
+    <loc>https://mcp-list.com/windsurf/everart-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/snowflake</loc>
+    <loc>https://mcp-list.com/windsurf/everything-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/spotify</loc>
+    <loc>https://mcp-list.com/windsurf/fetch-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/stripe</loc>
+    <loc>https://mcp-list.com/windsurf/filesystem-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/tavily-search</loc>
+    <loc>https://mcp-list.com/windsurf/github</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/ticketmaster</loc>
+    <loc>https://mcp-list.com/windsurf/git-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/tmdb</loc>
+    <loc>https://mcp-list.com/windsurf/memory</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/todoist</loc>
+    <loc>https://mcp-list.com/windsurf/postgres</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/travel-planner</loc>
+    <loc>https://mcp-list.com/windsurf/redis-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/vega-lite</loc>
+    <loc>https://mcp-list.com/windsurf/replicate</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/video-editor</loc>
+    <loc>https://mcp-list.com/windsurf/rijksmuseum</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mcp-list.com/mcp/wildfly-mcp</loc>
-    <lastmod>2025-03-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mcp-list.com/mcp/windows-cli</loc>
-    <lastmod>2025-03-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mcp-list.com/mcp/world-bank-data-api</loc>
-    <lastmod>2025-03-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mcp-list.com/mcp/xmind</loc>
-    <lastmod>2025-03-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mcp-list.com/mcp/x-twitter-by-enescinr</loc>
-    <lastmod>2025-03-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mcp-list.com/mcp/x-twitter-by-vidhupv</loc>
-    <lastmod>2025-03-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mcp-list.com/mcp/youtube</loc>
+    <loc>https://mcp-list.com/windsurf/salesforce-mcp</loc>
     <lastmod>2025-03-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
